@@ -11,7 +11,6 @@ from pydantic import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
 from reef_panda_arena.application.controller import run_replay
-from reef_panda_arena.application.live import run_live
 from reef_panda_arena.gateway.policies import VALID_PROFILES
 from reef_panda_arena.scenarios.loader import ScenarioLoader
 from reef_panda_arena.settings import ArenaSettings
@@ -51,6 +50,8 @@ def main() -> None:
                 print(f"{scenario.id}\t{scenario.level}\t{scenario.title}\t{scenario.attack_contract.decoder_id}")
         elif args.command == "run":
             if args.mode == "live":
+                from reef_panda_arena.application.live import run_live
+
                 summary = asyncio.run(run_live(
                     args.scenario_id, args.defense, args.seed,
                     attack_enabled=not args.no_attack,

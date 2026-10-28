@@ -31,7 +31,7 @@ Simple decoding and regex do not detect all steganography. Content filtering can
 
 ## Event push policy
 
-SSE pushes new events; it is not a <30-second polling loop. Heartbeats >=30 seconds. Optional client polling fallback >=30 seconds and stops after 300 seconds of last user interaction. Close stale subscriptions, cancel tasks on disconnect, and do not auto-reconnect forever. No background MySQL scan loop in MVP.
+SSE pushes new events; the browser has no database polling loop. Heartbeats occur at 30 seconds. After a disconnect, the browser closes its EventSource, fetches persisted history, and retries only after 30 seconds. It stops after 300 seconds without user interaction and reconnects again only on explicit user action. Server subscriptions are released on disconnect and close after 300 seconds. There is no background MySQL scan loop.
 
 ## Vulnerability reporting
 

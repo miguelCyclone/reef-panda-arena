@@ -7,18 +7,16 @@ from dataclasses import dataclass, field
 from typing import Any, Callable
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from reef_panda_arena.gateway.policies import (
-    VALID_PROFILES, contains_known_secret, enforces_taint, requires_allowlist,
-    scans_content,
-)
+from reef_panda_arena.gateway.policies import PolicyEngine, ProfilePolicy, VALID_PROFILES
 from reef_panda_arena.gateway.taint import SOURCE_FIELDS, TaintTracker
+from reef_panda_arena.storage.events import EventStore
 from reef_panda_arena.storage.models import RunEvent, SinkReceipt
 from reef_panda_arena.tools.outbound import encode_sink_payload
 from reef_panda_arena.tools.registry import (
-    OUTBOUND_TOOLS, ROLE_TOOLS, TOOL_DESTINATIONS, TOOL_INPUTS, MockToolRegistry,
+    OUTBOUND_TOOLS, ROLE_TOOLS, TOOL_DESTINATIONS, TOOL_INPUTS,
 )
+from reef_panda_arena.tools.protocol import ToolAdapter
 
 
 class OperationsMessage(BaseModel):
@@ -62,15 +60,17 @@ class GatewayResult:
 
 
 class PolicyGateway:
-    def __init__(self, session: AsyncSession, tools: MockToolRegistry,
+    def __init__(self, event_store: EventStore, tools: ToolAdapter,
                  profile: str, secret: bytes, max_calls: int,
                  max_events: int, max_payload_bytes: int,
                  allowed_attack_tool: str | None = None,
-                 on_event: Callable[[RunEvent], None] | None = None) -> None:
+                 on_event: Callable[[RunEvent], None] | None = None,
+                 policy: PolicyEngine | None = None) -> None:
         if profile not in VALID_PROFILES:
             raise ValueError("Unknown policy profile")
-        self.session = session
+        self.event_store = event_store
         self.tools = tools
+        self.policy = policy or ProfilePolicy(profile)
         self.profile = profile
         self.secret = secret
         self.max_calls = max_calls
@@ -129,7 +129,7 @@ class PolicyGateway:
               and call.tool_name in OUTBOUND_TOOLS | {"memory.write"}
               and call.tool_name != self.allowed_attack_tool):
             reason = "scenario_channel_not_allowed"
-        elif requires_allowlist(self.profile) and (
+        elif self.policy.requires_allowlist() and (
             context.role not in ROLE_TOOLS or call.tool_name not in ROLE_TOOLS[context.role]
         ):
             reason = "role_not_allowed"
@@ -152,9 +152,9 @@ class PolicyGateway:
             payload = encode_sink_payload(call.tool_name, args)
             if len(payload) > self.max_payload_bytes:
                 reason = "payload_too_large"
-            elif enforces_taint(self.profile) and "secret" in labels.values():
+            elif self.policy.enforces_taint() and "secret" in labels.values():
                 reason = "secret_taint_to_outbound"
-            elif scans_content(self.profile) and contains_known_secret(
+            elif self.policy.scans_content() and self.policy.contains_secret(
                 args.model_dump(exclude_none=True), self.secret
             ):
                 reason = "secret_content_match"
@@ -194,9 +194,9 @@ class PolicyGateway:
             },
             payload_sha256=digest,
         )
-        self.session.add(event)
+        receipt = None
         if reason == "allowed" and call.tool_name in OUTBOUND_TOOLS:
-            self.session.add(SinkReceipt(
+            receipt = SinkReceipt(
                 run_id=context.run_id,
                 event_seq=seq,
                 sink_name=destination,
@@ -204,8 +204,8 @@ class PolicyGateway:
                 byte_length=len(payload),
                 payload_sha256=hashlib.sha256(payload).digest(),
                 oracle_fragment_json=None,
-            ))
-        await self.session.commit()
+            )
+        await self.event_store.append(event, receipt)
         if self.on_event is not None:
             self.on_event(event)
         if reason == "allowed" and call.tool_name in OUTBOUND_TOOLS:
@@ -249,9 +249,9 @@ class PolicyGateway:
                     )
                 except ValueError:
                     reason = "invalid_provenance"
-            if reason == "allowed" and enforces_taint(self.profile) and "secret" in labels.values():
+            if reason == "allowed" and self.policy.enforces_taint() and "secret" in labels.values():
                 reason = "secret_taint_to_message"
-            if reason == "allowed" and scans_content(self.profile) and contains_known_secret(
+            if reason == "allowed" and self.policy.scans_content() and self.policy.contains_secret(
                 payload, self.secret
             ):
                 reason = "secret_content_match"
@@ -268,8 +268,7 @@ class PolicyGateway:
                 safe_summary_json={"argument_bytes": len(canonical), "field_count": len(payload)},
                 payload_sha256=digest,
             )
-            self.session.add(message_event)
-            await self.session.commit()
+            await self.event_store.append(message_event)
             if self.on_event is not None:
                 self.on_event(message_event)
             return GatewayResult(

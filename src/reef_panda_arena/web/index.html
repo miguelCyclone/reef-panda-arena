@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b20">
+  <title>Reef Panda · Covert Channel Arena</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script type="module" src="/assets/app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Arena navigation">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><i></i></div>
+        <div><strong>REEF PANDA</strong><small>SECURITY LAB</small></div>
+      </div>
+      <div class="side-label">WORKSPACE</div>
+      <a class="side-link current" href="/" aria-current="page"><span class="side-icon">◈</span> Arena overview <span class="side-dot"></span></a>
+      <div class="side-section-head"><span>RECENT RUNS</span><button id="refresh-runs" class="icon-button" type="button" aria-label="Refresh recent runs" title="Refresh recent runs">↻</button></div>
+      <div id="recent-runs" class="recent-runs"><p class="muted small">Loading runs…</p></div>
+      <form id="open-run-form" class="open-run-form">
+        <label for="open-run-id">Open by run ID</label>
+        <div class="inline-field"><input id="open-run-id" name="run_id" type="text" inputmode="text" autocomplete="off" placeholder="Paste a run UUID" aria-label="Run UUID"><button type="submit" aria-label="Open run">→</button></div>
+      </form>
+      <div class="sidebar-bottom"><span class="online-dot"></span> Local-only simulator <small>All outbound events stay in the mock sink.</small></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumbs">WORKSPACE <span>/</span> <strong>ARENA</strong></div>
+        <div class="topbar-right"><span class="version-chip">v0.2 · LOCAL</span><span id="connection-state" class="connection-state">Connecting</span></div>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-line"></span> EXPERIMENT CONTROL</div><h1 id="page-title">Covert Channel <em>Arena.</em></h1><p>Watch a bounded agent team complete a shipping task while a compromised worker tests the boundary. Every verdict comes from accepted local sink data.</p></div>
+        <div class="hero-visual" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-core">RP</div><span class="orbit-node node-a"></span><span class="orbit-node node-b"></span><span class="orbit-node node-c"></span></div>
+      </section>
+
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+      <div class="workspace-grid">
+        <section class="panel config-panel" aria-labelledby="configure-title">
+          <div class="panel-heading"><div><div class="section-kicker">01 / SETUP</div><h2 id="configure-title">Configure a run</h2></div><span class="heading-icon" aria-hidden="true">⌘</span></div>
+          <form id="run-form">
+            <fieldset class="field-group scenario-fieldset"><legend>Choose a challenge <span>10 scenarios · 5 levels</span></legend><div id="scenario-grid" class="scenario-grid" role="group" aria-label="Challenges"></div><p id="scenario-detail" class="scenario-detail">Loading challenge catalog…</p></fieldset>
+            <div class="form-row"><div class="field-group"><label for="mode">Run mode</label><select id="mode" name="mode"><option value="replay">Deterministic replay</option><option value="live">Local Ollama</option></select></div><div class="field-group"><label for="defense">Defense profile</label><select id="defense" name="defense"><option value="none">None</option><option value="allowlist">Allowlist</option><option value="content">Content scan</option><option value="taint" selected>Taint tracking</option><option value="combined">Combined</option></select></div></div>
+            <div class="form-row"><div class="field-group"><label for="seed">Seed</label><input id="seed" name="seed" type="number" min="0" max="9007199254740991" step="1" value="31" required><span class="field-hint">Same seed and local key reproduce the fixture.</span></div><div id="model-field" class="field-group" hidden><label for="model">Ollama model</label><input id="model" name="model" type="text" value="qwen3:1.7b" maxlength="160" autocomplete="off"><span class="field-hint">Must be installed locally.</span></div></div>
+            <label class="toggle-row" for="attack"><span class="toggle-copy"><strong>Enable attack attempt</strong><small>Use a matched control with this off.</small></span><input id="attack" name="attack" type="checkbox" checked><span class="switch" aria-hidden="true"></span></label>
+            <button id="start-run" class="primary-button" type="submit"><span>Start experiment</span><span aria-hidden="true">↗</span></button>
+          </form>
+        </section>
+
+        <section class="results-column" aria-labelledby="results-title">
+          <div class="panel run-overview">
+            <div class="panel-heading"><div><div class="section-kicker">02 / OBSERVE</div><h2 id="results-title">Run overview</h2></div><span id="run-state" class="status-pill idle">No run selected</span></div>
+            <div class="run-identity"><div><span class="meta-label">CURRENT RUN</span><strong id="run-identity">Choose a challenge to begin</strong><span id="run-meta" class="run-meta">Replay is ready without a model.</span></div><div class="run-actions"><button id="resume-updates" class="quiet-button" type="button" hidden>Resume updates</button><button id="cancel-run" class="quiet-button danger" type="button" hidden>Cancel run</button></div></div>
+            <div class="metrics-grid"><article class="metric-card security"><span class="metric-label">SECURITY OUTCOME</span><strong id="security-value">Awaiting run</strong><small id="security-detail">Exact accepted-egress verdict</small><div class="metric-symbol" aria-hidden="true">◇</div></article><article class="metric-card utility"><span class="metric-label">BENIGN TASK</span><strong id="utility-value">Awaiting run</strong><small id="utility-detail">Cause, ETA and safe update</small><div class="metric-symbol" aria-hidden="true">✳</div></article></div>
+            <div class="count-row"><div><span class="count-symbol accepted">↗</span><span>Accepted outbound</span><strong id="accepted-count">—</strong></div><div><span class="count-symbol blocked">⊘</span><span>Blocked attempts</span><strong id="blocked-count">—</strong></div></div>
+          </div>
+          <div class="panel timeline-panel"><div class="panel-heading timeline-heading"><div><div class="section-kicker">03 / TRACE</div><h2>Event timeline <span id="event-count">0</span></h2></div><span class="live-badge"><span></span> REDACTED LEDGER</span></div><div id="timeline" class="timeline"><div class="empty-timeline"><div class="empty-glyph" aria-hidden="true">◎</div><strong>No events yet</strong><p>Start a run or open one from the sidebar to inspect policy decisions.</p></div></div></div>
+        </section>
+      </div>
+      <footer class="page-footer"><span>REEF PANDA / LOCAL RESEARCH ENVIRONMENT</span><span>Mock tools only · No external delivery · Synthetic data</span></footer>
+    </main>
+  </div>
+  <noscript>This interface requires JavaScript. The CLI remains available without it.</noscript>
+</body>
+</html>

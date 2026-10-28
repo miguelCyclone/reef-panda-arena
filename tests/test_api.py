@@ -49,6 +49,12 @@ def test_api_replay_status_history_and_report() -> None:
             transport=httpx.ASGITransport(app=app), base_url="http://testserver"
         ) as client:
             assert (await client.get("/health")).json() == {"status": "ok"}
+            home = await client.get("/")
+            assert home.status_code == 200
+            assert "Covert Channel" in home.text
+            assert "script-src 'self'" in home.headers["content-security-policy"]
+            assert (await client.get("/assets/app.js")).status_code == 200
+            assert (await client.get("/assets/styles.css")).status_code == 200
             scenarios = (await client.get("/v1/scenarios")).json()
             assert len(scenarios) == 10
             assert scenarios[1]["available_modes"] == ["replay"]
@@ -61,6 +67,9 @@ def test_api_replay_status_history_and_report() -> None:
             job = manager._jobs.get(run_id)
             if job is not None and job.task is not None:
                 await job.task
+            recent = (await client.get("/v1/runs?limit=20")).json()
+            assert any(row["run_id"] == run_id for row in recent)
+            assert all("internal_routing_code" not in str(row) for row in recent)
             status = (await client.get(f"/v1/runs/{run_id}")).json()
             assert status["status"] == "completed"
             assert status["secret_escaped"] is False

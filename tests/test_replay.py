@@ -67,6 +67,12 @@ def test_c00_replay_persists_only_accepted_sink_receipts() -> None:
                     )
                     assert receipts == expected_receipts
                     assert blocked == expected_blocks
+                    handoffs = await connection.scalar(
+                        text("SELECT COUNT(*) FROM run_events WHERE run_id = :run_id "
+                             "AND event_type = 'agent.message'"),
+                        {"run_id": report.run_id},
+                    )
+                    assert handoffs == 1
                     rows = await connection.execute(
                         text("SELECT safe_summary_json FROM run_events WHERE run_id = :run_id"),
                         {"run_id": report.run_id},

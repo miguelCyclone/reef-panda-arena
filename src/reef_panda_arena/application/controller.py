@@ -1,4 +1,4 @@
-"""One bounded, persistent C00 replay slice."""
+"""Bounded persistent replay for the ten synthetic scenarios."""
 
 import asyncio
 from dataclasses import dataclass
@@ -12,10 +12,11 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from reef_panda_arena.gateway.invoke import PolicyGateway, ProposedCall, TrustedContext
 from reef_panda_arena.gateway.policies import VALID_PROFILES
 from reef_panda_arena.model.replay import ReplayCaller
-from reef_panda_arena.oracle.evaluate import benign_task_succeeded, secret_escaped
-from reef_panda_arena.scenarios.loader import ScenarioLoader
+from reef_panda_arena.oracle.evaluate import ExactOracle, Oracle, benign_task_succeeded
+from reef_panda_arena.scenarios.loader import ScenarioLoader, ScenarioLoaderProtocol
 from reef_panda_arena.scenarios.vault import SyntheticSecretVault
 from reef_panda_arena.settings import ArenaSettings
+from reef_panda_arena.storage.events import SessionEventStore
 from reef_panda_arena.storage.models import ArenaRun, RunEvent, RunScore
 from reef_panda_arena.telemetry.events import lifecycle_event
 from reef_panda_arena.tools.registry import MockToolRegistry
@@ -38,7 +39,7 @@ class RunSummary:
 
 async def run_replay(scenario_id: str, defense_profile: str, seed: int,
                      settings: ArenaSettings | None = None,
-                     loader: ScenarioLoader | None = None,
+                     loader: ScenarioLoaderProtocol | None = None,
                      attack_enabled: bool = True,
                      run_id: str | None = None,
                      on_event: Callable[[RunEvent], None] | None = None) -> RunSummary:
@@ -77,13 +78,14 @@ async def run_replay(scenario_id: str, defense_profile: str, seed: int,
                 prompt_version="replay-v1",
             )
             started_event = lifecycle_event(run_id, 0, "run.started")
-            session.add_all([run, vault, started_event])
-            await session.commit()
+            event_store = SessionEventStore(session)
+            session.add_all([run, vault])
+            await event_store.append(started_event)
             if on_event is not None:
                 on_event(started_event)
 
             gateway = PolicyGateway(
-                session=session,
+                event_store=event_store,
                 tools=MockToolRegistry(fixture, secret),
                 profile=defense_profile,
                 secret=secret,
@@ -148,19 +150,33 @@ async def run_replay(scenario_id: str, defense_profile: str, seed: int,
                         if action.tool_name == "memory.write" and attack_result.allowed:
                             internal_exposure = True
                     writer = replay.writer_call(shipment_result, incident_result)
+                    handoff = await gateway.forward_message(
+                        TrustedContext(
+                            run_id, "operations_worker", "operations_worker",
+                            operation_id="operations-handoff",
+                            trusted_public_fields=writer.public_fields,
+                        ),
+                        "response_writer", writer.call.arguments,
+                    )
+                    if not handoff.allowed or handoff.data is None:
+                        raise RuntimeError("Safe operations handoff was blocked")
                     writer_result = await gateway.invoke(
                         TrustedContext(
                             run_id, "response_writer", "response_writer",
                             operation_id="writer",
                             trusted_public_fields=writer.public_fields,
                         ),
-                        writer.call,
+                        ProposedCall(
+                            tool_name=writer.call.tool_name,
+                            arguments=handoff.data,
+                        ),
                     )
-                    escaped = secret_escaped(
+                    oracle: Oracle = ExactOracle()
+                    escaped = oracle.escaped(
                         secret, gateway.accepted_artifacts, scenario, seed
                     )
                     utility = benign_task_succeeded(
-                        fixture, writer.call.arguments["text"], secret,
+                        fixture, handoff.data["text"], secret,
                         writer_result.allowed,
                     )
                 score = RunScore(
@@ -190,8 +206,7 @@ async def run_replay(scenario_id: str, defense_profile: str, seed: int,
                 completed_event = lifecycle_event(
                     run_id, gateway.events + 1, "run.completed"
                 )
-                session.add(completed_event)
-                await session.commit()
+                await event_store.append(completed_event)
                 if on_event is not None:
                     on_event(completed_event)
                 return RunSummary(
@@ -206,8 +221,7 @@ async def run_replay(scenario_id: str, defense_profile: str, seed: int,
                 cancelled_event = lifecycle_event(
                     run_id, gateway.events + 1, "run.cancelled"
                 )
-                session.add(cancelled_event)
-                await session.commit()
+                await event_store.append(cancelled_event)
                 if on_event is not None:
                     on_event(cancelled_event)
                 raise
@@ -220,8 +234,7 @@ async def run_replay(scenario_id: str, defense_profile: str, seed: int,
                     run_id, gateway.events + 1,
                     "run.timed_out" if isinstance(error, TimeoutError) else "run.failed",
                 )
-                session.add(failed_event)
-                await session.commit()
+                await event_store.append(failed_event)
                 if on_event is not None:
                     on_event(failed_event)
                 raise

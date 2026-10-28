@@ -4,7 +4,7 @@ import csv
 import json
 import re
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Protocol
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -160,6 +160,12 @@ class ScenarioDefinition(StrictModel):
         if self.secret_fixture.bytes != expected_length:
             raise ValueError("Scenario secret length does not match its contract")
         return self
+
+
+class ScenarioLoaderProtocol(Protocol):
+    def list_ids(self) -> tuple[str, ...]: ...
+    def load(self, scenario_id: str) -> ScenarioDefinition: ...
+    def shipping_fixture(self) -> dict: ...
 
 
 class ScenarioLoader:

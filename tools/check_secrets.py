@@ -16,7 +16,7 @@ PATTERNS = (
     re.compile(r"\bgh[opusr]_[A-Za-z0-9]{30,}\b"),
     re.compile(r"\bsk-[A-Za-z0-9]{32,}\b"),
 )
-TEXT_SUFFIXES = {".py", ".md", ".txt", ".sql", ".yaml", ".yml", ".toml", ".csv", ".json", ".sh"}
+TEXT_SUFFIXES = {".py", ".md", ".txt", ".sql", ".yaml", ".yml", ".toml", ".csv", ".json", ".sh", ".js", ".mjs", ".css", ".html"}
 
 
 def main() -> None:

@@ -9,10 +9,11 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from reef_panda_arena.api.manager import RunManager
+from reef_panda_arena.api.web import mount_web
 from reef_panda_arena.model.ollama import ModelUnavailable
 from reef_panda_arena.scenarios.loader import ScenarioLoader
 from reef_panda_arena.settings import ArenaSettings
-from reef_panda_arena.storage.queries import get_run_status, list_run_events
+from reef_panda_arena.storage.queries import get_run_status, list_recent_runs, list_run_events
 from reef_panda_arena.storage.reports import list_reports
 
 
@@ -76,6 +77,7 @@ def create_app(settings: ArenaSettings | None = None,
 
     app = FastAPI(title="Reef Panda Covert Channel Arena", lifespan=lifespan)
     app.state.run_manager = manager
+    mount_web(app)
 
     @app.get("/health")
     async def health() -> dict[str, str]:
@@ -113,6 +115,10 @@ def create_app(settings: ArenaSettings | None = None,
         if row is None:
             raise HTTPException(404, "Unknown run")
         return row
+
+    @app.get("/v1/runs", response_model=list[RunStatus])
+    async def recent_runs(limit: int = Query(20, ge=1, le=50)) -> list[RunStatus]:
+        return [RunStatus.model_validate(row) for row in await list_recent_runs(settings, limit)]
 
     @app.get("/v1/runs/{run_id}", response_model=RunStatus)
     async def run_status(run_id: UUID) -> RunStatus:

@@ -63,11 +63,11 @@ async def measure(seeds: tuple[int, ...]) -> None:
     print(f"- Seeds: {', '.join(map(str, seeds))}; one attacked and one benign control per seed/profile/scenario")
     print("- Conditions: local mock tools and sink, deterministic replay, fresh run IDs, temperature not applicable")
     print()
-    print("| Scenario | Profile | Attacked N | ASR | Utility under attack | Benign utility | Invalid attempts | Blocks | p50 ms |")
-    print("|---|---|---:|---:|---:|---:|---:|---:|---:|")
+    print("| Scenario | Profile | Attacked N | ASR | Utility under attack | Benign utility | Invalid attempts | Attack blocks | Benign blocks | p50 ms |")
+    print("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|")
     for scenario_id in ScenarioLoader().list_ids():
         for profile in sorted(VALID_PROFILES):
-            escaped = utility = benign = invalid = blocks = 0
+            escaped = utility = benign = invalid = blocks = benign_blocks = 0
             durations = []
             for seed in seeds:
                 start = monotonic()
@@ -79,10 +79,11 @@ async def measure(seeds: tuple[int, ...]) -> None:
                 benign += control.benign_task_success
                 invalid += attacked.invalid_attempt
                 blocks += attacked.blocked_attempts
+                benign_blocks += control.blocked_attempts
             print(
                 f"| {scenario_id} | {profile} | {len(seeds)} | {ratio(escaped, len(seeds))} "
                 f"| {ratio(utility, len(seeds))} | {ratio(benign, len(seeds))} "
-                f"| {invalid} | {blocks} | {median(durations):.0f} |"
+                f"| {invalid} | {blocks} | {benign_blocks} | {median(durations):.0f} |"
             )
     print()
     print("These results measure fixed synthetic replay scripts and selected application boundaries. They do not establish security against arbitrary encodings, unmodeled tool paths, host compromise, or real-world workloads. Content filtering and taint tracking are deliberately limited baselines; live-model behavior must be reported separately.")

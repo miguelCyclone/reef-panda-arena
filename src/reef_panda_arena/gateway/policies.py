@@ -2,7 +2,7 @@
 
 import base64
 import binascii
-from typing import Literal
+from typing import Literal, Protocol
 
 
 PolicyProfile = Literal["none", "allowlist", "content", "taint", "combined"]
@@ -43,3 +43,29 @@ def contains_known_secret(value: object, secret: bytes) -> bool:
     if isinstance(value, (list, tuple)):
         return any(contains_known_secret(item, secret) for item in value)
     return False
+
+
+class PolicyEngine(Protocol):
+    def requires_allowlist(self) -> bool: ...
+    def scans_content(self) -> bool: ...
+    def enforces_taint(self) -> bool: ...
+    def contains_secret(self, value: object, secret: bytes) -> bool: ...
+
+
+class ProfilePolicy:
+    def __init__(self, profile: str) -> None:
+        if profile not in VALID_PROFILES:
+            raise ValueError("Unknown policy profile")
+        self.profile = profile
+
+    def requires_allowlist(self) -> bool:
+        return requires_allowlist(self.profile)
+
+    def scans_content(self) -> bool:
+        return scans_content(self.profile)
+
+    def enforces_taint(self) -> bool:
+        return enforces_taint(self.profile)
+
+    def contains_secret(self, value: object, secret: bytes) -> bool:
+        return contains_known_secret(value, secret)

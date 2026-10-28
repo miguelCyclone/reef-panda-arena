@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from uuid import uuid4
 
 from reef_panda_arena.application.controller import run_replay
-from reef_panda_arena.application.live import run_live
 from reef_panda_arena.model.ollama import ModelUnavailable, OllamaCaller
 from reef_panda_arena.scenarios.loader import ScenarioLoader
 from reef_panda_arena.settings import ArenaSettings
@@ -78,6 +77,8 @@ class RunManager:
                     run_id=job.run_id, on_event=publish,
                 )
             else:
+                from reef_panda_arena.application.live import run_live
+
                 await run_live(
                     request.scenario_id, request.defense_profile, request.seed,
                     attack_enabled=request.attack_enabled,

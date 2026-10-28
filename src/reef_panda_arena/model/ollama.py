@@ -48,7 +48,7 @@ class OllamaCaller:
             "messages": [message.model_dump() for message in request.messages],
             "tools": tools,
             "stream": False,
-            "think": request.config.model_name.startswith("qwen3:4b"),
+            "think": request.config.model_name in {"qwen3:4b", "qwen3:4b-thinking"},
             "options": {
                 "temperature": request.config.temperature,
                 "num_predict": request.config.max_response_tokens,

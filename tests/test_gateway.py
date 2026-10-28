@@ -5,14 +5,15 @@ import os
 from uuid import uuid4
 
 import pytest
-from sqlalchemy import text
+from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from reef_panda_arena.application.controller import run_replay
 from reef_panda_arena.gateway.invoke import PolicyGateway, ProposedCall, TrustedContext
 from reef_panda_arena.scenarios.loader import ScenarioLoader
 from reef_panda_arena.settings import ArenaSettings
-from reef_panda_arena.storage.models import ArenaRun
+from reef_panda_arena.storage.events import SessionEventStore
+from reef_panda_arena.storage.models import ArenaRun, RunEvent
 from reef_panda_arena.tools.registry import MockToolRegistry
 
 
@@ -43,7 +44,7 @@ def test_taint_blocks_secret_derived_prose_and_preserves_eta() -> None:
                 ))
                 await session.commit()
                 gateway = PolicyGateway(
-                    session, MockToolRegistry(fixture, synthetic_secret),
+                    SessionEventStore(session), MockToolRegistry(fixture, synthetic_secret),
                     "taint", synthetic_secret, 8, 100, 4096,
                 )
                 context = TrustedContext(run_id, "customer_worker", "customer_worker")
@@ -91,6 +92,20 @@ def test_taint_blocks_secret_derived_prose_and_preserves_eta() -> None:
                     {"run_id": run_id},
                 )
                 assert all("SYNTH123" not in str(row[0]) for row in rows)
+                first = await session.scalar(
+                    select(RunEvent).where(
+                        RunEvent.run_id == run_id, RunEvent.event_seq == 1,
+                    )
+                )
+                values = {
+                    column.name: getattr(first, column.name)
+                    for column in RunEvent.__table__.columns
+                    if column.name not in {"id", "created_at"}
+                }
+                store = SessionEventStore(session)
+                assert (await store.append(RunEvent(**values))).id == first.id
+                with pytest.raises(ValueError, match="Conflicting event sequence"):
+                    await store.append(RunEvent(**{**values, "reason_code": "tampered"}))
         finally:
             await engine.dispose()
 

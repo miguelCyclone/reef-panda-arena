@@ -19,10 +19,11 @@ from reef_panda_arena.graph.nodes import LiveNodes
 from reef_panda_arena.graph.topology import build_live_graph
 from reef_panda_arena.model.ollama import ModelUnavailable, OllamaCaller
 from reef_panda_arena.model.protocol import ModelConfig
-from reef_panda_arena.oracle.evaluate import benign_task_succeeded, secret_escaped
-from reef_panda_arena.scenarios.loader import ScenarioLoader
+from reef_panda_arena.oracle.evaluate import ExactOracle, Oracle, benign_task_succeeded
+from reef_panda_arena.scenarios.loader import ScenarioLoader, ScenarioLoaderProtocol
 from reef_panda_arena.scenarios.vault import SyntheticSecretVault
 from reef_panda_arena.settings import ArenaSettings
+from reef_panda_arena.storage.events import SessionEventStore
 from reef_panda_arena.storage.models import ArenaRun, RunEvent, RunScore
 from reef_panda_arena.telemetry.events import lifecycle_event
 from reef_panda_arena.tools.registry import MockToolRegistry
@@ -40,8 +41,9 @@ async def run_live(
     if defense_profile not in VALID_PROFILES or not 0 <= seed < 2**64:
         raise ValueError("Invalid live run configuration")
     settings = settings or ArenaSettings()
-    scenario = ScenarioLoader().load(scenario_id)
-    fixture = ScenarioLoader().shipping_fixture()
+    loader: ScenarioLoaderProtocol = ScenarioLoader()
+    scenario = loader.load(scenario_id)
+    fixture = loader.shipping_fixture()
     config = ModelConfig(
         model_name=model_name or settings.model,
         temperature=temperature,
@@ -68,8 +70,9 @@ async def run_live(
                 prompt_version=PROMPT_VERSION,
             )
             started_event = lifecycle_event(run_id, 0, "run.started")
-            session.add_all([run, vault, started_event])
-            await session.commit()
+            event_store = SessionEventStore(session)
+            session.add_all([run, vault])
+            await event_store.append(started_event)
             if on_event is not None:
                 on_event(started_event)
             gateway = None
@@ -79,7 +82,7 @@ async def run_live(
                 if digest is None:
                     raise ModelUnavailable("Selected local model is not installed")
                 gateway = PolicyGateway(
-                    session=session,
+                    event_store=event_store,
                     tools=MockToolRegistry(fixture, secret),
                     profile=defense_profile,
                     secret=secret,
@@ -102,7 +105,8 @@ async def run_live(
                 with tracing_context(enabled=False):
                     async with asyncio.timeout(min(scenario.limits.timeout_seconds, 360)):
                         output = await graph.ainvoke(initial, {"recursion_limit": 8})
-                escaped = secret_escaped(secret, gateway.accepted_artifacts, scenario, seed)
+                oracle: Oracle = ExactOracle()
+                escaped = oracle.escaped(secret, gateway.accepted_artifacts, scenario, seed)
                 utility = benign_task_succeeded(
                     fixture, output.get("writer_text", ""), secret,
                     bool(output.get("writer_accepted")),
@@ -136,8 +140,7 @@ async def run_live(
                 completed_event = lifecycle_event(
                     run_id, gateway.events + 1, "run.completed"
                 )
-                session.add(completed_event)
-                await session.commit()
+                await event_store.append(completed_event)
                 if on_event is not None:
                     on_event(completed_event)
                 return RunSummary(
@@ -155,8 +158,7 @@ async def run_live(
                     run_id, (gateway.events if gateway else 0) + 1,
                     "run.cancelled",
                 )
-                session.add(cancelled_event)
-                await session.commit()
+                await event_store.append(cancelled_event)
                 if on_event is not None:
                     on_event(cancelled_event)
                 raise
@@ -173,8 +175,7 @@ async def run_live(
                     run_id, (gateway.events if gateway else 0) + 1,
                     "run.timed_out" if isinstance(error, TimeoutError) else "run.failed",
                 )
-                session.add(failed_event)
-                await session.commit()
+                await event_store.append(failed_event)
                 if on_event is not None:
                     on_event(failed_event)
                 raise

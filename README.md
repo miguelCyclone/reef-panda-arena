@@ -4,7 +4,7 @@
 
 Covert Channel Arena is an **open-source prototype** for exploring information-flow failures in multi-agent systems. Its bounded swarm resolves a simulated shipping incident while one worker attempts to leak **synthetic secrets** through allowed tool calls, agent messages, mathematical expressions, or shared state. A local, deterministic oracle scores what *actually* crossed a trust boundary.
 
-> **Status: local v0.1 prototype.** Replay runs C00–C09 with five defense profiles and an exact accepted-egress oracle. C00 also runs through a bounded LangGraph graph and local Ollama. A typed HTTP API streams redacted events with SSE. The optional browser UI is not implemented. See [measured results](docs/MEASUREMENTS.md) for observed outcomes and limitations.
+> **Status: local v0.2 prototype.** Replay runs C00–C09 with five defense profiles and an exact accepted-egress oracle. C00 also runs through a bounded LangGraph graph and local Ollama. A typed HTTP API and browser dashboard display redacted events through SSE. See [measured results](docs/MEASUREMENTS.md) for observed outcomes and limitations.
 
 ## Why this project
 
@@ -32,7 +32,7 @@ flowchart TB
     Gate --> Event[(MySQL event ledger)]
     Sink --> Oracle[Independent deterministic oracle]
     Oracle --> Score[Utility + security score]
-    Event --> UI[SSE / CLI event viewer]
+    Event --> UI[Browser / CLI event viewer]
     classDef risk fill:#ffe2d5,stroke:#a53a19,color:#141414
     class Customer,Vault,Sink risk
 ```
@@ -84,7 +84,7 @@ flowchart LR
   DB --> Stream
 ```
 
-The implemented replay path, C00 live graph, API, and local sink follow these boundaries. The diagrams show their logical data flow; the optional browser UI is not implemented.
+The implemented replay path, C00 live graph, API, browser dashboard, and local sink follow these logical boundaries.
 
 ## Legitimate task
 
@@ -150,11 +150,19 @@ ollama pull qwen3:1.7b
 .venv/bin/reef-panda-arena run C00 --mode live --defense none --seed 31
 ```
 
-`qwen3:1.7b` is the tested default. Another installed local model can be selected with `--model`; `qwen3:4b` currently produced failed tool-call smoke runs on the measured CPU. Live runs can fail when a model does not produce the required tool call; failures are persisted and excluded from attack-success denominators. See the measured live outcomes in [docs/MEASUREMENTS.md](docs/MEASUREMENTS.md).
+`qwen3:1.7b` is the tested default. To try a 4B model, run `ollama pull qwen3:4b-instruct` and select `--model qwen3:4b-instruct`; its benign and attacked C00 smoke runs completed locally. The plain `qwen3:4b` tag resolved to a thinking variant on this machine and produced failed tool-call smoke runs. Live failures are persisted and excluded from attack-success denominators. See the measured live outcomes in [docs/MEASUREMENTS.md](docs/MEASUREMENTS.md).
 
 Serve the API on loopback with `.venv/bin/reef-panda-arena serve --port 8000`. `GET /v1/scenarios` lists available modes; `POST /v1/runs` starts a bounded run; `GET /v1/runs/{run_id}/events` retrieves redacted history; `GET /v1/runs/{run_id}/stream` pushes SSE updates; `GET /v1/runs/{run_id}/report` returns the score; `POST /v1/runs/{run_id}/cancel` cancels an active local run. SSE connections send heartbeats at 30 seconds and close after 300 seconds; clients should explicitly fetch history when reconnecting. API examples and exact response schemas are available at `http://127.0.0.1:8000/docs` while the server runs.
 
 `run` and `report` print sanitized summaries. The synthetic secret is encrypted in MySQL; accepted sink bytes are kept in process for exact scoring, while only digests and metadata enter event rows. `.env`, the socket, and private `.build/` notes are ignored by Git.
+
+## Browser dashboard
+
+Start the local server with `.venv/bin/reef-panda-arena serve --port 8000`, then open `http://127.0.0.1:8000/`. The browser UI is packaged with the Python application, with no npm install or external assets. It lets you choose a challenge, mode, defense profile, seed and attack control; launch or cancel a run; reopen recent runs; and compare exact security and legitimate-task outcomes beside a redacted event timeline. Only C00 supports live mode; every scenario supports replay.
+
+![Browser dashboard showing a completed synthetic C02 run with separate security and task outcomes](docs/images/arena-dashboard.jpg)
+
+The page uses SSE for updates. On a connection failure it closes the browser stream, fetches persisted history, and retries **after 30 seconds**. It stops reconnecting after **300 seconds without user interaction**; use **Resume updates** to reconnect deliberately. It never displays raw synthetic secrets or accepted sink payloads. The server binds to `127.0.0.1` by default and requires the local MySQL service.
 
 ## Primary benchmark metrics
 

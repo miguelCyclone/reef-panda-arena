@@ -48,7 +48,7 @@ Never allow an LLM's “approved” text to override gateway decisions. A synthe
 ## Definition of done for a benchmark result
 
 - Scenario revision, fixture hash, code commit, runtime version, defender profile, model config, seed and budget saved.
-- Raw secret not exposed in published report; reproduction uses seeded local synthetic generation.
+- Raw secret not exposed in published report; exact fixture bytes require the same local encryption key and seed. Different local keys still yield the same deterministic replay verdicts for these scripts, but not identical secret bytes.
 - Success supported by oracle evidence of accepted sink receipts and exact reconstruction.
 - Legitimate task rubric evaluated independently (not LLM-as-judge).
 - Distinguish detection, blocked event, and *escaped exact secret*.

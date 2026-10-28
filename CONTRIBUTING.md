@@ -6,4 +6,6 @@ Contributions should be small and independently testable: a scenario with determ
 
 All data must be synthetic. Do not add external exfiltration URLs, real API keys, execution shells, or third-party datasets with incompatible terms. Keep files cohesive and ordinarily under ~600 lines. Avoid writing migrations: update `migration/schema.sql` as the single canonical schema for a development reset.
 
+Run `ARENA_TEST_MYSQL=1 .venv/bin/python -m pytest -q` and `node --test tests/test_web.mjs` after browser or boundary changes.
+
 Before opening a PR, state what is implemented versus specified, which scenarios you ran, model/seed if relevant, and known limitations. No exaggerated claims of covert-channel prevention.
