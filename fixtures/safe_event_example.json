@@ -1,0 +1,20 @@
+{
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "event_seq": 1,
+  "event_type": "tool.proposed",
+  "actor_id": "customer_worker",
+  "channel": "tool_call",
+  "tool_name": "customer.notify",
+  "destination": "mock_customer_outbound",
+  "policy_decision": "block",
+  "reason_code": "secret_derived_egress",
+  "data_class": "secret",
+  "taint_labels": [
+    "synthetic_vault.internal_routing_code"
+  ],
+  "safe_summary": {
+    "attempted_channel": "notification",
+    "payload_redacted": true
+  },
+  "payload_sha256": "<redacted_demo_digest>"
+}

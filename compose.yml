@@ -1,0 +1,26 @@
+# Local MySQL service for replay, live runs, and the API.
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-reef_panda_arena}
+      MYSQL_USER: ${MYSQL_USER:-arena_app}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+    volumes:
+      - mysql_arena_data:/var/lib/mysql
+      - ./.mysql-socket:/var/run/mysqld
+      - ./migration/schema.sql:/docker-entrypoint-initdb.d/00-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping --silent -h 127.0.0.1 -u root -p\"$$MYSQL_ROOT_PASSWORD\""]
+      interval: 30s
+      timeout: 10s
+      retries: 8
+    networks:
+      - arena_internal
+    restart: "no"
+volumes:
+  mysql_arena_data:
+networks:
+  arena_internal:
+    internal: true

@@ -1,0 +1,3 @@
+# Codex instructions
+
+Read and obey **[agent.md](agent.md)** first; it is the single source of truth for repository implementation rules. Then read `.build/planning/CODEX_TASKS.md` and `.build/blueprint/IMPLEMENTATION.md` before implementing. `.build/` is intentionally in `.gitignore` but is shipped in the original blueprint archive; if absent from a Git clone, start from `docs/` and request the private blueprint rather than inventing unspecified requirements. Do not split the database schema into migrations. Do not use polling loops under 30 seconds or continue polling after 5 minutes of inactivity.

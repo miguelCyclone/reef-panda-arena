@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Check public files
+        run: python3 tools/check_secrets.py
+      - name: Set up local MySQL and package
+        run: python3 tools/setup.py
+      - name: Run deterministic integration tests
+        run: ARENA_TEST_MYSQL=1 .venv/bin/python -m pytest -q

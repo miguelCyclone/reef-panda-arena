@@ -1,0 +1,30 @@
+# Research / build-only blueprint: shipped in downloadable source archive, never committed
+.build/
+# Local configuration and raw data
+.env
+.env.*
+!.env.example
+*.local
+local-traces/
+reports/raw/
+*.db
+*.sqlite3
+.mysql/
+.mysql-socket/
+mysql-data/
+# Python/tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.dist/
+dist/
+build/
+*.egg-info/
+# JS optional
+node_modules/
+# OS and IDE
+.DS_Store
+.idea/
+.vscode/
