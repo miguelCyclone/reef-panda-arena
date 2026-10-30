@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" role="img" aria-labelledby="title desc">
+  <title id="title">Reef Panda</title>
+  <desc id="desc">Adversarial AI agent security arena. Private data, permitted actions, independent evidence. Local first, synthetic data, MIT license.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#102c3c"/><stop offset="1" stop-color="#0b1220"/></linearGradient>
+    <linearGradient id="accent"><stop stop-color="#5eead4"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient>
+  </defs>
+  <rect width="960" height="300" rx="20" fill="url(#bg)"/>
+  <path d="M0 276 Q240 225 480 276 T960 276" fill="none" stroke="#234455" stroke-width="2"/>
+  <path d="M0 290 Q240 239 480 290 T960 290" fill="none" stroke="#1b3548" stroke-width="2"/>
+  <rect x="40" y="40" width="44" height="4" rx="2" fill="url(#accent)"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="40" y="108" fill="#f0fdfa" font-size="58" font-weight="700" letter-spacing="-2">Reef Panda</text>
+    <text x="42" y="145" fill="#5eead4" font-size="23" font-weight="600">Adversarial AI agent security arena</text>
+    <text x="42" y="180" fill="#b4c6d5" font-size="17">Private data. Permitted actions. Independent evidence.</text>
+    <g font-size="13" font-weight="600">
+      <rect x="42" y="216" width="111" height="30" rx="15" fill="#173f45" stroke="#286464"/>
+      <text x="97.5" y="236" text-anchor="middle" fill="#99f6e4">LOCAL FIRST</text>
+      <rect x="164" y="216" width="148" height="30" rx="15" fill="#18364b" stroke="#2c526e"/>
+      <text x="238" y="236" text-anchor="middle" fill="#bae6fd">SYNTHETIC DATA</text>
+      <rect x="323" y="216" width="111" height="30" rx="15" fill="#302d4c" stroke="#50476f"/>
+      <text x="378.5" y="236" text-anchor="middle" fill="#ddd6fe">MIT LICENSE</text>
+    </g>
+  </g>
+  <g transform="translate(758 142)" fill="none">
+    <circle r="85" stroke="#254657"/>
+    <circle r="65" stroke="#254657" stroke-dasharray="4 8"/>
+    <path d="M-126 0 H-70 M70 0 H126" stroke="#5eead4" stroke-width="2"/>
+    <circle cx="-126" r="5" fill="#5eead4"/><circle cx="126" r="5" fill="#7dd3fc"/>
+    <circle cx="-30" cy="-29" r="18" fill="#5eead4"/>
+    <circle cx="30" cy="-29" r="18" fill="#5eead4"/>
+    <ellipse cy="3" rx="49" ry="44" fill="#e2f6f3"/>
+    <ellipse cx="-20" cy="1" rx="13" ry="17" transform="rotate(25 -20 1)" fill="#102c3c"/>
+    <ellipse cx="20" cy="1" rx="13" ry="17" transform="rotate(-25 20 1)" fill="#102c3c"/>
+    <circle cx="-18" cy="-1" r="4" fill="#5eead4"/><circle cx="18" cy="-1" r="4" fill="#5eead4"/>
+    <path d="M-7 20 Q0 29 7 20 Z" fill="#102c3c"/>
+  </g>
+</svg>

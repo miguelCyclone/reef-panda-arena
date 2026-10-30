@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="64" viewBox="0 0 900 64" role="img" aria-labelledby="title">
+  <title id="title">Beyond booking</title>
+  <rect width="900" height="64" rx="10" fill="#101c2a"/>
+  <rect x="0" y="14" width="4" height="36" rx="2" fill="#fcd34d"/>
+  <text x="22" y="41" fill="#fcd34d" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="600">Beyond booking</text>
+  <text x="870" y="40" text-anchor="end" fill="#fcd34d" font-family="Arial, Helvetica, sans-serif" font-size="16">04</text>
+</svg>
