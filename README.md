@@ -5,7 +5,8 @@
   <a href="#run-it-locally">Quickstart</a> ·
   <a href="#see-a-real-run">Live evidence</a> ·
   <a href="docs/RESEARCH_SCOPE.md">Research scope</a> ·
-  <a href="docs/ARCHITECTURE.md">Architecture</a>
+  <a href="docs/ARCHITECTURE.md">Architecture</a> ·
+  <a href="#theoretical-motivation-hidden-information-in-legitimate-actions">Theory</a>
 </p>
 
 **Can an AI agent leak private information through a legitimate tool call, without disrupting the task it was asked to perform?**
@@ -100,3 +101,62 @@ The library's replay results are separate from live model evidence; scenario IDs
 **Safety boundary:** all patient records and secrets are synthetic. There are **no real messaging accounts, medical services or external data sinks**, and agents cannot execute arbitrary code or access arbitrary URLs. See [SECURITY.md](SECURITY.md).
 
 MIT license for original code and content; see [LICENSE](LICENSE).
+
+## Theoretical motivation: hidden information in legitimate actions
+
+A legitimate tool call is not necessarily a privacy-safe communication.
+
+An AI agent may need to read sensitive information and disclose a limited, authorized result. But what if the agent uses the freedom in that communication to transmit additional, unauthorized information?
+
+### Information flow and covert channels
+
+Let:
+
+- $S$ be private information.
+- $A$ be the information authorized for disclosure.
+- $Y$ be the externally observable tool-call output.
+
+An ideal confidentiality objective is:
+
+$$
+I(S;Y\mid A)=0
+$$
+
+In other words, observing the outbound communication should reveal no additional information about $S$ beyond what $A$ already permits.
+
+But legitimate tasks often allow multiple equivalent representations.
+
+If an authorized message has $N$ distinguishable representations, choosing among them offers a theoretical noiseless channel capacity bounded by:
+
+$$
+C_{\text{choice}}\leq\log_2(N)\text{ bits}
+$$
+
+For example, two ordinary scheduling phrases may convey the same authorized request while also representing one hidden binary choice.
+
+### Linguistic and mathematical steganography
+
+Covert information can potentially travel through:
+
+- **Natural language:** word choices, sentence structure, formatting, or stylistic variations.
+- **Mathematical representations:** coefficients, numerical sequences, equivalent expressions, or encoded function parameters.
+- **Tool-call arguments:** structured fields, optional descriptions, or other permitted representations.
+- **Agent-to-agent communication:** information passed across multiple trust boundaries.
+
+A polynomial is one possible mathematical carrier:
+
+$$
+f(x)=a_0+a_1x+a_2x^2+\cdots+a_nx^n
+$$
+
+Its coefficients may represent ordinary numerical data or encode information under a convention known to a receiver. The polynomial alone does not establish that leakage occurred.
+
+The challenge is not necessarily to reverse every possible encoding. It is to determine how much information an authorized agent should be allowed to communicate, and which controls preserve confidentiality without preventing useful work.
+
+### Related research
+
+- [Neural Linguistic Steganography](https://aclanthology.org/D19-1115/) — Ziegler et al., EMNLP 2019.
+- [Secret Collusion among AI Agents: Multi-Agent Deception via Steganography](https://proceedings.nips.cc/paper_files/paper/2024/hash/861f7dad098aec1c3560fb7add468d41-Abstract-Conference.html) — Motwani et al., NeurIPS 2024.
+- [TrojanStego: Your Language Model Can Secretly Be A Steganographic Privacy Leaking Agent](https://aclanthology.org/2025.emnlp-main.1386/) — Meier et al., EMNLP 2025.
+
+These works motivate Reef Panda's broader research direction. The current live booking experiment demonstrates a finite, pre-agreed linguistic channel. Arbitrary mathematical encoding, autonomous discovery of new steganographic schemes, and general firewall evasion remain outside its demonstrated results.
