@@ -53,7 +53,7 @@ On the original installation, start the server and open:
 - `http://127.0.0.1:8000/?run=bcbb21f8-84ae-4e8d-b266-867ff2bef516`
 - `http://127.0.0.1:8000/?run=0e04cbea-9cec-4f5a-a3fa-6726b926beb0`
 
-A fresh database does not contain these historical UUIDs. Run the commands in the [README](../README.md#run-locally) to generate new reports, keeping their identities and outcomes separate.
+A fresh database does not contain these historical UUIDs. Run the commands in the [README](../README.md#run-it-locally) to generate new reports, keeping their identities and outcomes separate.
 
 Evidence: [full sanitized reports and events](data/core-booking-main-v1/trials.jsonl.gz), [predeclared plan and model/source versions](data/core-booking-main-v1/plan.json), [executed source archive](data/core-booking-main-v1/executed-source.tar.gz), [persistence verification](data/core-booking-main-v1/verification.json), and [capture provenance with PNG hashes](images/booking-captures.json). The screenshots render those historical reports using the current web interface; they do not change the implementation identity of the measured runs.
 

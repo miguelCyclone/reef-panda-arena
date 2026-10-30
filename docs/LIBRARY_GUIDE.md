@@ -1,6 +1,6 @@
 # Experiment library: C00–C43
 
-The [medical-booking experiment](CORE_BOOKING.md) is the primary demonstration. This guide preserves the shipping library architecture and points to its detailed contracts, without repeating its measured tables. Open `/library` in the local web interface; [startup instructions](../README.md#run-locally) are shared with the main demo.
+The [medical-booking experiment](CORE_BOOKING.md) is the primary demonstration. This guide preserves the shipping library architecture and points to its detailed contracts, without repeating its measured tables. Open `/library` in the local web interface; [startup instructions](../README.md#run-it-locally) are shared with the main demo.
 
 ## Navigation and evidence categories
 
@@ -15,6 +15,8 @@ The [medical-booking experiment](CORE_BOOKING.md) is the primary demonstration. 
 All 44 support replay. Model-originated evidence, scripted replay and historical fixture-proxy results remain distinct. Use the [corrected mechanism catalog](EXECUTED_MECHANISMS.md) and [1,584-run post-audit replay study](POST_AUDIT_RESULTS.md) for the current library interpretation. Distinct case IDs are not independent discovered exploits.
 
 The earlier ten-role shipping baseline did not complete its legitimate task. Its [retained correction report](LIVE_BASELINE_CORRECTION.md) is separate from the successful single-agent medical-booking baseline. Deliberate lineage-fault arms remain unimplemented.
+
+The [preserved shipping architecture](ARCHITECTURE_LIBRARY.md) details the original C00 topology, deployment, recovery and runtime bounds.
 
 ## Library system overview
 
