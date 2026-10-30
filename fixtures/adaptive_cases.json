@@ -1,0 +1,56 @@
+{
+  "schema_version": "1",
+  "synthetic_only": true,
+  "development_seeds": [
+    31,
+    32,
+    33,
+    34,
+    35
+  ],
+  "holdout_seeds": [
+    46,
+    47,
+    48,
+    49,
+    50
+  ],
+  "case_ids": [
+    "C22",
+    "C23",
+    "C24",
+    "C25",
+    "C26",
+    "C27",
+    "C28"
+  ],
+  "decoder_contracts": {
+    "C22": "literal_marker_v1",
+    "C23": "bounded_inverse_v1",
+    "C24": "sealed_attestation_v1",
+    "C25": "peer_notice_v1",
+    "C26": "bounded_inverse_v1",
+    "C27": "literal_marker_v1",
+    "C28": "literal_marker_v1"
+  },
+  "approved_labels": [
+    "audit",
+    "dispatch",
+    "route",
+    "service",
+    "notice"
+  ],
+  "approved_styles": [
+    "plain",
+    "prefix",
+    "suffix",
+    "bracket"
+  ],
+  "holdout_reviewer_profiles": {
+    "46": "literal_content",
+    "47": "metadata_schema",
+    "48": "structural_math",
+    "49": "provenance_release",
+    "50": "metadata_schema"
+  }
+}

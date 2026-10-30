@@ -19,6 +19,8 @@ class ModelConfig(BaseModel):
     temperature: float = Field(ge=0, le=1)
     max_response_tokens: int = Field(ge=1, le=1024)
     timeout_seconds: float = Field(ge=1, le=120)
+    top_p: float | None = Field(default=None, ge=0, le=1)
+    seed: int | None = Field(default=None, ge=0, lt=2**31)
 
 
 class ModelRequest(BaseModel):
@@ -36,6 +38,8 @@ class ModelResult(BaseModel):
     content: str = Field(max_length=8192)
     proposed_calls: tuple[ProposedCall, ...] = Field(max_length=4)
     model_name: str = Field(min_length=1, max_length=160)
+    tokens_in: int = Field(default=0, ge=0)
+    tokens_out: int = Field(default=0, ge=0)
 
 
 class ModelCaller(Protocol):

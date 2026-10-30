@@ -7,6 +7,12 @@ from pathlib import Path
 from typing import Literal, Protocol
 
 import yaml
+
+from reef_panda_arena.scenarios.sensitive_contract import SensitiveScenarioDefinition
+from reef_panda_arena.scenarios.extension_contract import ExtensionScenarioDefinition
+from reef_panda_arena.adaptive.scenario import AdaptiveScenarioDefinition
+from reef_panda_arena.scenarios.unified_contract import UnifiedScenarioDefinition
+from reef_panda_arena.scenarios.resources import default_data_root
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
@@ -156,6 +162,9 @@ class ScenarioDefinition(StrictModel):
 
     @model_validator(mode="after")
     def validate_short_token(self) -> "ScenarioDefinition":
+        expected_modes = ("replay", "live") if self.id == "C00" else ("replay",)
+        if self.mode_support != expected_modes:
+            raise ValueError("Declared modes do not match the implemented scenario runner")
         expected_length = 2 if self.id == "C08" else 8
         if self.secret_fixture.bytes != expected_length:
             raise ValueError("Scenario secret length does not match its contract")
@@ -164,13 +173,13 @@ class ScenarioDefinition(StrictModel):
 
 class ScenarioLoaderProtocol(Protocol):
     def list_ids(self) -> tuple[str, ...]: ...
-    def load(self, scenario_id: str) -> ScenarioDefinition: ...
+    def load(self, scenario_id: str) -> ScenarioDefinition | SensitiveScenarioDefinition | ExtensionScenarioDefinition | AdaptiveScenarioDefinition | UnifiedScenarioDefinition: ...
     def shipping_fixture(self) -> dict: ...
 
 
 class ScenarioLoader:
     def __init__(self, project_root: Path | None = None) -> None:
-        self.root = project_root or Path(__file__).resolve().parents[3]
+        self.root = project_root or default_data_root()
 
     def _catalog(self) -> dict[str, dict[str, str]]:
         with (self.root / "scenarios" / "catalog.csv").open(newline="") as source:
@@ -183,19 +192,35 @@ class ScenarioLoader:
     def list_ids(self) -> tuple[str, ...]:
         return tuple(sorted(self._catalog()))
 
-    def load(self, scenario_id: str) -> ScenarioDefinition:
-        if not re.fullmatch(r"C0[0-9]", scenario_id):
+    def load(self, scenario_id: str) -> ScenarioDefinition | SensitiveScenarioDefinition | ExtensionScenarioDefinition | AdaptiveScenarioDefinition | UnifiedScenarioDefinition:
+        if not re.fullmatch(r"C(?:0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-3])", scenario_id):
             raise ValueError("Invalid scenario identifier")
         row = self._catalog().get(scenario_id)
         if row is None:
             raise ValueError("Unknown scenario")
         raw = yaml.safe_load((self.root / "scenarios" / f"{scenario_id}.yaml").read_text())
-        scenario = ScenarioDefinition.model_validate(raw)
+        if int(scenario_id[1:]) >= 29:
+            scenario = UnifiedScenarioDefinition.model_validate(raw)
+            if (
+                scenario.id != scenario_id
+                or row["oracle_decoder"] != "unified_exact"
+                or row["allowed_tool"] != "customer.notify"
+                or row["channel_family"] != scenario.boundary
+                or int(row["max_tool_calls"]) != scenario.limits.tool_message_actions
+                or int(row["difficulty_level"]) != scenario.difficulty
+                or row["name"] != scenario.name
+            ):
+                raise ValueError("Unified catalog does not match its definition")
+            return scenario
+        model = (AdaptiveScenarioDefinition if int(scenario_id[1:]) >= 22 else
+                 ExtensionScenarioDefinition if int(scenario_id[1:]) >= 15 else
+                 SensitiveScenarioDefinition if int(scenario_id[1:]) >= 10 else ScenarioDefinition)
+        scenario = model.model_validate(raw)
         if (
             scenario.id != scenario_id
             or row["oracle_decoder"] != scenario.attack_contract.decoder_id
             or row["allowed_tool"] != scenario.allowed_channels[0].tool
-            or int(row["max_tool_calls"]) != scenario.limits.max_tool_calls
+            or int(row["max_tool_calls"]) != (scenario.adaptive_budget.max_gateway_calls if isinstance(scenario, AdaptiveScenarioDefinition) else scenario.limits.max_tool_calls)
             or int(row["difficulty_level"]) != scenario.level
             or row["name"] != scenario.title
         ):

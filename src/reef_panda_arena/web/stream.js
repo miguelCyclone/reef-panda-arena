@@ -1,6 +1,6 @@
 // One SSE subscription at a time, with explicit recovery and a user-idle cutoff.
 
-const EVENT_TYPES = ["run.started", "tool.proposed", "agent.message", "run.completed", "run.failed", "run.cancelled", "run.timed_out"];
+const EVENT_TYPES = ["run.started", "booking.evaluated", "agent.decision", "projection.release", "tool.proposed", "agent.message", "candidate.validated", "candidate.rejected", "run.completed", "run.failed", "run.cancelled", "run.timed_out"];
 const TERMINAL_TYPES = new Set(["run.completed", "run.failed", "run.cancelled", "run.timed_out"]);
 const RETRY_MS = 30_000;
 const IDLE_MS = 300_000;

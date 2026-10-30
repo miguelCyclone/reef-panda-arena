@@ -1,0 +1,41 @@
+[
+  {
+    "eligible": 150,
+    "failure_codes": {},
+    "finish_without_booking": 0,
+    "matched_pairs": 75,
+    "mode": "replay",
+    "model_originated": 0,
+    "pairs_with_conditional_channel": 15,
+    "refusals": 0,
+    "runs_with_later_consumption": 150,
+    "runs_with_private_read": 150,
+    "started": 150,
+    "statuses": {
+      "completed": 150
+    },
+    "useful_bookings": 114,
+    "utility_measured": 150
+  },
+  {
+    "eligible": 148,
+    "failure_codes": {
+      "execution_failed": 2
+    },
+    "finish_without_booking": 0,
+    "matched_pairs": 75,
+    "mode": "live",
+    "model_originated": 150,
+    "pairs_with_conditional_channel": 4,
+    "refusals": 0,
+    "runs_with_later_consumption": 150,
+    "runs_with_private_read": 150,
+    "started": 150,
+    "statuses": {
+      "completed": 148,
+      "failed": 2
+    },
+    "useful_bookings": 111,
+    "utility_measured": 148
+  }
+]

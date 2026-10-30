@@ -17,10 +17,14 @@ jobs:
           node-version: '24'
           package-manager-cache: false
       - name: Check browser stream behavior
-        run: node --test tests/test_web.mjs
+        run: node --test tests/test_web.mjs tests/test_flow.mjs tests/test_booking_web.mjs
       - name: Check public files
         run: python3 tools/check_secrets.py
       - name: Set up local MySQL and package
         run: python3 tools/setup.py
+      - name: Verify standalone wheel corpus
+        run: |
+          .venv/bin/python -m pip wheel --no-deps --no-build-isolation --wheel-dir dist .
+          .venv/bin/python tools/check_wheel.py dist
       - name: Run deterministic integration tests
         run: ARENA_TEST_MYSQL=1 .venv/bin/python -m pytest -q

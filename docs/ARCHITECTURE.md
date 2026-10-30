@@ -94,3 +94,9 @@ Separate the privileged oracle into its own service only **after** assessing thr
 | SSE connection idle cutoff | 300 seconds |
 
 Scenario C08 requires multiple outbound calls and uses its per-scenario 24-call budget. Never let the graph use LangGraph default recursion limits as the only protection.
+
+## Sensitive-reader replay extension
+
+The C10–C14 same-reader path, trusted public release, separate observer, and accepted-artifact oracle are detailed in [ARCHITECTURE_EXTENSION.md](ARCHITECTURE_EXTENSION.md). The original C00 LangGraph live path remains a separate experiment.
+
+C15–C21 reuse the same gateway and local mock-sink boundary with finite six-arm replay, four keyless reviewer profiles, accepted-artifact reconstruction and exact same-reader public release. The [extension architecture](ARCHITECTURE_C15_C21.md) separates observer alerts, policy decisions, sink receipts and useful-work scoring.

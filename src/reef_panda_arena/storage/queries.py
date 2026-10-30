@@ -1,26 +1,18 @@
 """Sanitized status and finite event-history repository queries."""
 
-from sqlalchemy import select
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from reef_panda_arena.settings import ArenaSettings
-from reef_panda_arena.storage.models import ArenaRun, RunEvent, RunScore
+from reef_panda_arena.storage.models import ArenaRun, RunEvent, RunScore, SinkReceipt
+from reef_panda_arena.storage.report_projection import project_report
+from reef_panda_arena.storage.reports import load_report_evidence
 from reef_panda_arena.telemetry.events import safe_event
 
 
-def _run_status(run: ArenaRun, score: RunScore | None) -> dict:
-    return {
-        "run_id": run.id,
-        "scenario_id": run.scenario_id,
-        "mode": run.mode,
-        "defense_profile": run.defense_profile,
-        "status": run.status,
-        "model_name": run.model_name,
-        "failure_code": run.failure_code,
-        "secret_escaped": bool(score.secret_escaped) if score else None,
-        "benign_task_success": bool(score.benign_task_success) if score else None,
-        "accepted_outbound_events": score.accepted_outbound_events if score else None,
-    }
+def _run_status(run: ArenaRun, score: RunScore | None, evidence: dict | None = None) -> dict:
+    """Status and report routes deliberately share nullable score semantics."""
+    return project_report(run, score, evidence)
 
 
 async def get_run_status(settings: ArenaSettings, run_id: str) -> dict | None:
@@ -34,25 +26,31 @@ async def get_run_status(settings: ArenaSettings, run_id: str) -> dict | None:
                 .where(ArenaRun.id == run_id)
             )
             pair = row.first()
-            return _run_status(*pair) if pair is not None else None
+            if pair is None:
+                return None
+            evidence = await load_report_evidence(session, [run_id])
+            return _run_status(*pair, evidence[run_id])
     finally:
         await engine.dispose()
 
 
-async def list_recent_runs(settings: ArenaSettings, limit: int = 20) -> list[dict]:
+async def list_recent_runs(settings: ArenaSettings, limit: int = 20, *,
+                           scenario_ids: tuple[str, ...] | None = None) -> list[dict]:
     if not 1 <= limit <= 50:
         raise ValueError("Recent-run limit must be within 1..50")
     engine = create_async_engine(settings.sqlalchemy_url, pool_pre_ping=True)
     try:
         sessions = async_sessionmaker(engine)
         async with sessions() as session:
+            query = select(ArenaRun, RunScore).outerjoin(RunScore, ArenaRun.id == RunScore.run_id)
+            if scenario_ids is not None:
+                query = query.where(ArenaRun.scenario_id.in_(scenario_ids))
             rows = await session.execute(
-                select(ArenaRun, RunScore)
-                .outerjoin(RunScore, ArenaRun.id == RunScore.run_id)
-                .order_by(ArenaRun.created_at.desc(), ArenaRun.id.desc())
-                .limit(limit)
+                query.order_by(ArenaRun.created_at.desc(), ArenaRun.id.desc()).limit(limit)
             )
-            return [_run_status(run, score) for run, score in rows.all()]
+            pairs = rows.all()
+            evidence = await load_report_evidence(session, [run.id for run, _ in pairs])
+            return [_run_status(run, score, evidence[run.id]) for run, score in pairs]
     finally:
         await engine.dispose()
 
@@ -66,11 +64,16 @@ async def list_run_events(settings: ArenaSettings, run_id: str,
         sessions = async_sessionmaker(engine)
         async with sessions() as session:
             result = await session.execute(
-                select(RunEvent)
+                select(RunEvent, SinkReceipt.accepted)
+                .outerjoin(SinkReceipt, and_(
+                    SinkReceipt.run_id == RunEvent.run_id,
+                    SinkReceipt.event_seq == RunEvent.event_seq,
+                ))
                 .where(RunEvent.run_id == run_id, RunEvent.event_seq >= cursor)
                 .order_by(RunEvent.event_seq)
                 .limit(limit)
             )
-            return [safe_event(event) for event in result.scalars()]
+            return [safe_event(event, accepted_sink_receipt=accepted is True)
+                    for event, accepted in result]
     finally:
         await engine.dispose()

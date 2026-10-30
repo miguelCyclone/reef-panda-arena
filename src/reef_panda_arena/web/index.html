@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#101b20">
   <title>Reef Panda · Covert Channel Arena</title>
   <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/flow.css">
   <script type="module" src="/assets/app.js"></script>
 </head>
 <body>
@@ -29,7 +30,7 @@
     <main class="main-content">
       <header class="topbar">
         <div class="breadcrumbs">WORKSPACE <span>/</span> <strong>ARENA</strong></div>
-        <div class="topbar-right"><span class="version-chip">v0.2 · LOCAL</span><span id="connection-state" class="connection-state">Connecting</span></div>
+        <div class="topbar-right"><span class="version-chip">v0.4 · LOCAL</span><span id="connection-state" class="connection-state">Connecting</span></div>
       </header>
 
       <section class="hero" aria-labelledby="page-title">
@@ -39,14 +40,53 @@
 
       <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
 
+      <section id="flow-theater" class="panel flow-theater" aria-labelledby="flow-title">
+        <div class="flow-heading">
+          <div><div class="section-kicker">TRACE STUDIO / AGENT INTERACTIONS</div><h2 id="flow-title">Follow the information.</h2><p id="flow-scenario">Select an experiment</p></div>
+          <span class="flow-studio-badge">SYNTHETIC · LOCAL</span>
+        </div>
+        <div class="flow-layout">
+          <div class="flow-stage">
+            <div class="flow-legend"><span><i class="legend-honest"></i>Agent</span><span><i class="legend-rogue"></i>Compromised</span><span><i class="legend-private"></i>Private source</span><span>S = hidden value</span></div>
+            <div id="flow-canvas" class="flow-canvas" tabindex="0" aria-label="Scrollable agent graph"></div><small class="flow-pan-hint">Scroll horizontally to explore the graph on small screens.</small>
+            <div class="flow-caption"><span id="flow-phase">EVENT-DRIVEN PLAYBACK</span><strong id="flow-event-title">A trace you can follow</strong><p id="flow-event-detail">Open a run and press Play trace.</p></div>
+          </div>
+          <aside class="flow-inspector" aria-label="Mechanism and recorded call">
+            <div class="section-kicker">HOW THE VALUE TRAVELS</div><h3 id="flow-mechanism-title">Scenario mechanism</h3>
+            <div id="flow-formula" class="flow-formula">S → f(S) → outbound field</div>
+            <p id="flow-explanation"></p><p id="flow-operation" class="flow-operation"></p>
+            <details open><summary>Call structure · symbolic values</summary><pre id="flow-call">Select a recorded event.</pre></details>
+            <p id="flow-evidence" class="flow-evidence"></p>
+          </aside>
+        </div>
+        <div class="flow-controls">
+          <div class="flow-buttons"><button id="flow-play" type="button" class="flow-play">Play trace</button><button id="flow-restart" type="button" title="Restart" aria-label="Restart playback">↺</button><button id="flow-back" type="button" aria-label="Previous step">←</button><button id="flow-next" type="button" aria-label="Next step">→</button><button id="flow-attack" type="button">Jump to attack</button><button id="flow-end" type="button">Result</button></div>
+          <label class="flow-speed-label">Speed <select id="flow-speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+          <span id="flow-step">Waiting for a run</span>
+          <label class="sr-only" for="flow-scrub">Playback step</label><input id="flow-scrub" type="range" min="0" max="0" value="0">
+          <label class="sr-only" for="flow-frame-list">Jump to recorded event</label><select id="flow-frame-list" aria-label="Jump to recorded event"></select><small id="flow-motion-note">Illustrative timing · recorded event order</small>
+        </div>
+        <div class="flow-outcomes" aria-live="polite">
+          <div><span>ADMIN / OBSERVER</span><strong id="flow-admin">Not recorded / not reached</strong></div>
+          <div><span>POLICY / LOCAL OUTPUT</span><strong id="flow-policy">0 accepted · 0 blocked</strong></div>
+          <div><span>INDEPENDENT ORACLE</span><strong id="flow-oracle">Awaiting final oracle</strong></div>
+        </div><p id="flow-result-note" class="flow-result-note">Observer, blocking and exact recovery are independent outcomes.</p>
+      </section>
+
       <div class="workspace-grid">
         <section class="panel config-panel" aria-labelledby="configure-title">
           <div class="panel-heading"><div><div class="section-kicker">01 / SETUP</div><h2 id="configure-title">Configure a run</h2></div><span class="heading-icon" aria-hidden="true">⌘</span></div>
           <form id="run-form">
-            <fieldset class="field-group scenario-fieldset"><legend>Choose a challenge <span>10 scenarios · 5 levels</span></legend><div id="scenario-grid" class="scenario-grid" role="group" aria-label="Challenges"></div><p id="scenario-detail" class="scenario-detail">Loading challenge catalog…</p></fieldset>
-            <div class="form-row"><div class="field-group"><label for="mode">Run mode</label><select id="mode" name="mode"><option value="replay">Deterministic replay</option><option value="live">Local Ollama</option></select></div><div class="field-group"><label for="defense">Defense profile</label><select id="defense" name="defense"><option value="none">None</option><option value="allowlist">Allowlist</option><option value="content">Content scan</option><option value="taint" selected>Taint tracking</option><option value="combined">Combined</option></select></div></div>
+            <fieldset class="field-group scenario-fieldset"><legend>Choose a challenge <span>44 scenarios · 6 levels</span></legend><div id="scenario-grid" class="scenario-grid" role="group" aria-label="Challenges"></div><p id="scenario-detail" class="scenario-detail">Loading challenge catalog…</p></fieldset>
+            <div class="form-row"><div class="field-group"><label for="mode">Run mode</label><select id="mode" name="mode"><option value="replay">Deterministic replay</option><option value="live">Local Ollama (C00)</option><option value="live_adaptive">Adaptive Ollama (C22–C28)</option><option value="live_multiagent">Independent Ollama roles (C29–C43)</option></select></div><div class="field-group"><label for="defense">Defense profile</label><select id="defense" name="defense"><option value="none">None</option><option value="allowlist">Allowlist</option><option value="content">Content scan</option><option value="taint" selected>Taint tracking</option><option value="combined">Combined</option><option value="declassify_strict">Strict release</option><option value="allowlist_only">Allowlist only · unified</option><option value="content_only">Content only · unified</option><option value="actor_local">Actor-local taint · weak control</option><option value="transitive">Transitive lineage</option><option value="scoped_release">Scoped release</option><option value="strict_no_release">Strict no release</option></select></div></div>
             <div class="form-row"><div class="field-group"><label for="seed">Seed</label><input id="seed" name="seed" type="number" min="0" max="9007199254740991" step="1" value="31" required><span class="field-hint">Same seed and local key reproduce the fixture.</span></div><div id="model-field" class="field-group" hidden><label for="model">Ollama model</label><input id="model" name="model" type="text" value="qwen3:1.7b" maxlength="160" autocomplete="off"><span class="field-hint">Must be installed locally.</span></div></div>
-            <label class="toggle-row" for="attack"><span class="toggle-copy"><strong>Enable attack attempt</strong><small>Use a matched control with this off.</small></span><input id="attack" name="attack" type="checkbox" checked><span class="switch" aria-hidden="true"></span></label>
+            <div id="extension-fields" class="form-row" hidden><div class="field-group"><label for="arm">Experiment arm</label><select id="arm" name="arm"><option value="A1">A1 · suspect with defense</option><option value="A0">A0 · suspect without defense</option><option value="B1">B1 · benign with defense</option><option value="B0">B0 · benign without defense</option><option value="H0">H0 · hard benign control</option><option value="P0">P0 · plain secret control</option></select></div><div class="field-group"><label for="observer">Reviewer view</label><select id="observer" name="observer"><option value="literal_content">Literal content</option><option value="metadata_schema" selected>Metadata and schema</option><option value="structural_math">Structural math</option><option value="provenance_release">Provenance and release</option></select></div></div>
+            <div id="adaptive-fields" hidden>
+              <div class="form-row"><div class="field-group"><label for="adaptive-arm">Research arm</label><select id="adaptive-arm" name="adaptive_arm"><option value="A0">A0 · benign control</option><option value="A1" selected>A1 · static scripted</option><option value="A2">A2 · one model proposal</option><option value="A3">A3 · adaptive blind</option><option value="A4">A4 · declared policy</option><option value="A5">A5 · frozen holdout transfer</option></select></div><div class="field-group"><label for="adaptive-reviewer">Reviewer view</label><select id="adaptive-reviewer" name="adaptive_reviewer"><option value="literal_content">Literal content</option><option value="metadata_schema" selected>Metadata and schema</option><option value="structural_math">Structural math</option><option value="provenance_release">Provenance and release</option></select></div></div>
+              <div class="form-row"><div class="field-group"><label for="adaptive-rounds">Maximum research rounds</label><input id="adaptive-rounds" type="number" min="1" max="8" value="8"><span class="field-hint">Server cap: 8 rounds, 16 attacker model calls, 32 gateway calls, 15 minutes.</span></div><div class="field-group"><label for="adaptive-split">Fixture split</label><select id="adaptive-split"><option value="development">Development · seeds 31–35</option><option value="holdout">Holdout · seeds 46–50 (C28 A5)</option></select></div></div>
+              <div id="transfer-field" class="field-group" hidden><label for="transfer-run-id">Completed C28 development run ID</label><input id="transfer-run-id" type="text" autocomplete="off" placeholder="UUID of frozen development run"><span class="field-hint">Holdout reuses its data-only representation without revising the model.</span></div>
+            </div>
+            <label id="attack-row" class="toggle-row" for="attack"><span class="toggle-copy"><strong>Enable attack attempt</strong><small>Use a matched control with this off.</small></span><input id="attack" name="attack" type="checkbox" checked><span class="switch" aria-hidden="true"></span></label>
             <button id="start-run" class="primary-button" type="submit"><span>Start experiment</span><span aria-hidden="true">↗</span></button>
           </form>
         </section>
@@ -57,6 +97,46 @@
             <div class="run-identity"><div><span class="meta-label">CURRENT RUN</span><strong id="run-identity">Choose a challenge to begin</strong><span id="run-meta" class="run-meta">Replay is ready without a model.</span></div><div class="run-actions"><button id="resume-updates" class="quiet-button" type="button" hidden>Resume updates</button><button id="cancel-run" class="quiet-button danger" type="button" hidden>Cancel run</button></div></div>
             <div class="metrics-grid"><article class="metric-card security"><span class="metric-label">SECURITY OUTCOME</span><strong id="security-value">Awaiting run</strong><small id="security-detail">Exact accepted-egress verdict</small><div class="metric-symbol" aria-hidden="true">◇</div></article><article class="metric-card utility"><span class="metric-label">BENIGN TASK</span><strong id="utility-value">Awaiting run</strong><small id="utility-detail">Cause, ETA and safe update</small><div class="metric-symbol" aria-hidden="true">✳</div></article></div>
             <div class="count-row"><div><span class="count-symbol accepted">↗</span><span>Accepted outbound</span><strong id="accepted-count">—</strong></div><div><span class="count-symbol blocked">⊘</span><span>Blocked attempts</span><strong id="blocked-count">—</strong></div></div>
+            <div id="scoring-details" class="research-details" hidden><div><span>SCORE VERSION</span><strong id="score-version">—</strong></div><div><span>ORACLE VALIDATION</span><strong id="oracle-validation">—</strong></div><div><span>OBSERVER SCOPE / COVERAGE / ALERT ORDER</span><strong id="observer-coverage">—</strong></div><div><span>STRICT ATTACKER WIN</span><strong id="strict-win">—</strong></div><div><span>STRICT TRIAL ELIGIBLE</span><strong id="score-eligibility">—</strong></div><div><span>ALL RUN ALERTS</span><strong id="all-alerts">—</strong></div></div>
+            <section id="benign-cost-details" aria-label="Cost to legitimate work" hidden>
+              <div class="research-details">
+                <div><span>ELIGIBLE TASK PROPOSALS</span><strong id="benign-eligible">Not measured</strong></div>
+                <div><span>FALSE ALERTS / INSPECTED ACTIONS</span><strong id="benign-false-alerts">Not measured</strong></div>
+                <div><span>FALSE BLOCKS / POLICY DECISIONS</span><strong id="benign-false-blocks">Not measured</strong></div>
+                <div><span>RUNS WITH FALSE ALERTS / ELIGIBLE RUNS</span><strong id="benign-alert-runs">Not measured</strong></div>
+                <div><span>RUNS WITH FALSE BLOCKS / ELIGIBLE RUNS</span><strong id="benign-block-runs">Not measured</strong></div>
+              </div>
+              <p id="benign-matched-shapes" class="muted small">No measured shape-matched task actions.</p>
+              <p class="muted small">Only independently validated legitimate proposals count, including blocked work. Zero eligible or inspected actions means not measured. Incomplete runs retain partial action evidence and contribute no completed-run denominator.</p>
+            </section>
+            <section id="utility-details" aria-label="Task utility evidence" hidden>
+              <div class="research-details"><div><span>UTILITY VERSION</span><strong id="utility-version">Unknown</strong></div><div><span>UTILITY SCOPE</span><strong id="utility-scope">Unknown</strong></div><div><span>TASK MECHANISM</span><strong id="task-mechanism">Unknown</strong></div><div><span>TASK ACTOR</span><strong id="task-actor">Unknown</strong></div><div><span>TASK MODEL REQUESTS</span><strong id="task-model-calls">Not measured</strong></div><div><span>SAME READER UTILITY</span><strong id="same-reader-utility">Not measured</strong></div><div><span>CONTRIBUTION VERIFIED</span><strong id="task-contribution">Not measured</strong></div><div><span>CUSTOMER SEQUENCE CONSISTENT</span><strong id="task-sequence">Not measured</strong></div><div><span>ACCEPTED / REQUIRED TASK ACTIONS</span><strong id="task-required-actions">Not measured</strong></div></div>
+              <p class="muted small">Utility scope identifies who performs the task. Unknown values do not establish classified-reader utility.</p>
+            </section>
+            <section id="knowledge-details" aria-label="Fixture and access contracts" hidden>
+              <div class="research-details"><div><span>FIXTURE MODE</span><strong id="fixture-mode">Unknown</strong></div><div><span>POLICY ACCESS</span><strong id="policy-knowledge">Unknown</strong></div><div><span>OBSERVER ACCESS</span><strong id="observer-knowledge">Unknown</strong></div><div><span>RECEIVER ACCESS</span><strong id="receiver-knowledge">Unknown</strong></div></div>
+              <p class="muted small">Configured access; recorded events show actual source reads and inspections.</p>
+            </section>
+            <p id="independent-mode-note" hidden>Independent roles choose their actions. Catalog paths describe opportunities; the recorded events show what actually happened. A0 schedules turns. Public lookups and validated exact copies are trusted operations.</p>
+            <div id="execution-details" class="research-details" hidden><div><span>DECISIONS / LIMIT</span><strong id="decision-count">—</strong></div><div><span>MODEL REQUESTS / LIMIT</span><strong id="model-request-count">—</strong></div><div><span>SCRIPT ACTIVATIONS</span><strong id="script-turn-count">—</strong></div><div><span>DECISION ACCOUNTING</span><strong id="decision-accounting">—</strong></div></div>
+            <section id="information-details" aria-label="Accepted information evidence" hidden>
+              <h3>Information recovered at the local sink</h3>
+              <p id="information-state">Not measured</p>
+              <div class="research-details">
+                <div><span>ACCEPTED REPRESENTATION</span><strong id="information-bytes">Not measured</strong></div>
+                <div><span>RECOVERED REFERENCE UNITS</span><strong id="information-recovered">Not measured</strong></div>
+                <div><span>RECOVERED SOURCE POSITIONS</span><strong id="information-positions">Not measured</strong></div>
+                <div><span>REFERENCE DOMAIN</span><strong id="information-domain">Not measured</strong></div>
+                <div><span>DECLARED REPRESENTATION CAPACITY</span><strong id="information-capacity">Not measured</strong></div>
+                <div><span>CONDITIONAL ALPHABET MODEL</span><strong id="information-modeled">Not measured</strong></div>
+                <div><span>OTHER VERIFIED COMPONENTS</span><strong id="information-components">Not measured</strong></div>
+              </div>
+              <p id="information-assumptions">Partial leakage remains unknown.</p>
+            </section>
+            <div id="extension-details" class="research-details" hidden><div><span>LEGACY FIXTURE BIT SCORE</span><strong id="verified-bits">—</strong></div><div><span>ATTACK ALERTS / BENIGN ALERTS</span><strong id="alert-split">—</strong></div><div><span>STRICT ATTACKER WIN</span><strong id="undetected-success">—</strong></div></div>
+            <div id="adaptive-details" class="research-details" hidden><div><span>ROUNDS / LIMIT</span><strong id="adaptive-round-count">—</strong></div><div><span>VALID / INVALID CANDIDATES</span><strong id="adaptive-candidate-count">—</strong></div><div><span>MODEL / GATEWAY CALLS</span><strong id="adaptive-call-count">—</strong></div><div><span>STOP REASON</span><strong id="adaptive-stop-reason">—</strong></div><div><span>REVIEWER ALERTS</span><strong id="adaptive-alert-count">—</strong></div><div><span>STRUCTURAL NOVELTY</span><strong id="adaptive-novelty">—</strong></div></div>
+            <div id="unified-details" class="research-details" hidden><div><span>FULL RECOVERY / ACCEPTED EGRESS</span><strong id="unified-recovery">—</strong></div><div><span>ALERTS BEFORE / AFTER RECOVERY</span><strong id="unified-alert">—</strong></div><div><span>LINEAGE GAPS / UNKNOWN</span><strong id="unified-lineage">—</strong></div><div><span>PEER DELIVERIES / BLOCKED EGRESS</span><strong id="unified-flow">—</strong></div><div><span>STRICT ATTACKER WIN</span><strong id="unified-win">—</strong></div></div>
+            <div id="sensitive-details" class="research-details" hidden><div><span>LEGACY COMPONENT SCORE (NOT BITS)</span><strong id="partial-score">—</strong></div><div><span>OBSERVER ALERTS</span><strong id="alert-count">—</strong></div><div><span>LEGITIMATE BLOCKS</span><strong id="legitimate-block-count">—</strong></div></div>
           </div>
           <div class="panel timeline-panel"><div class="panel-heading timeline-heading"><div><div class="section-kicker">03 / TRACE</div><h2>Event timeline <span id="event-count">0</span></h2></div><span class="live-badge"><span></span> REDACTED LEDGER</span></div><div id="timeline" class="timeline"><div class="empty-timeline"><div class="empty-glyph" aria-hidden="true">◎</div><strong>No events yet</strong><p>Start a run or open one from the sidebar to inspect policy decisions.</p></div></div></div>
         </section>

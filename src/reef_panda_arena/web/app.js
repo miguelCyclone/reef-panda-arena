@@ -1,5 +1,6 @@
 // Browser controller for the local API; it never handles raw sink payloads.
 
+import { FlowPlayer } from "/assets/flow-player.js";
 import { RunStream } from "/assets/stream.js";
 import {
   renderRecentRuns, renderRun, renderScenarioDetail, renderScenarios,
@@ -7,9 +8,11 @@ import {
 } from "/assets/view.js";
 
 const $ = (id) => document.getElementById(id);
-const terminal = new Set(["completed", "failed", "cancelled", "timed_out"]);
+const terminal = new Set(["completed", "failed", "cancelled", "timed_out", "budget_exhausted"]);
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const state = { scenarios: [], selectedScenario: "C00", recentRuns: [], activeRunId: null, status: null, report: null, events: [] };
+
+const flow = new FlowPlayer();
 
 async function api(path, options = {}) {
   const response = await fetch(path, { cache: "no-store", ...options });
@@ -28,6 +31,7 @@ async function api(path, options = {}) {
 }
 
 function paint() {
+  flow.update(state.scenarios.find((item) => item.id === (state.status?.scenario_id || state.selectedScenario)), state.status, state.report, state.events);
   renderRun(state.status, state.report, state.events);
   renderTimeline(state.events);
   renderRecentRuns(state.recentRuns, state.activeRunId, selectRun);
@@ -39,6 +43,7 @@ function chooseScenario(id, recordInteraction = true) {
   state.selectedScenario = id;
   renderScenarios(state.scenarios, id, chooseScenario);
   renderScenarioDetail(scenario);
+  if (!state.status) flow.update(scenario, null, null, []);
   if (recordInteraction) stream.touch();
 }
 
@@ -70,7 +75,11 @@ async function recoverRun(runId) {
     if (state.activeRunId === runId && error.status === 404) showNotice("Run ID was not found.", true);
     throw error;
   }
-  const report = status.status === "completed" ? await api(`/v1/runs/${runId}/report`) : null;
+  let report = null;
+  if (terminal.has(status.status)) {
+    try { report = await api(`/v1/runs/${runId}/report`); }
+    catch (error) { if (error.status !== 409) throw error; }
+  }
   if (state.activeRunId !== runId) return false;
   state.status = status;
   state.report = report;
@@ -80,6 +89,13 @@ async function recoverRun(runId) {
   $("defense").value = status.defense_profile;
   if (status.model_name) $("model").value = status.model_name;
   if (report) $("seed").value = String(report.seed);
+  if (report?.arm && Number(status.scenario_id.slice(1)) >= 22 && Number(status.scenario_id.slice(1)) <= 28) $("adaptive-arm").value = report.arm;
+  else if (report?.arm) $("arm").value = report.arm;
+  if (report?.observer_profile && Number(status.scenario_id.slice(1)) >= 22) $("adaptive-reviewer").value = report.observer_profile;
+  else if (report?.observer_profile) $("observer").value = report.observer_profile;
+  if (report?.round_limit) $("adaptive-rounds").value = String(report.round_limit);
+  if (report?.split) $("adaptive-split").value = report.split;
+  if (report?.transfer_from_run_id) $("transfer-run-id").value = report.transfer_from_run_id;
   renderScenarioDetail(state.scenarios.find((item) => item.id === status.scenario_id));
   paint();
   return !terminal.has(status.status);
@@ -124,18 +140,54 @@ async function startRun(event) {
     showNotice("Choose a supported scenario, mode, and nonnegative integer seed.", true);
     return;
   }
+  const number = Number(scenario.id.slice(1));
+  const extension = number >= 15 && number <= 21;
+  const adaptive = number >= 22 && number <= 28;
+  const arm = extension ? $("arm").value : adaptive ? $("adaptive-arm").value : null;
+  const defense = $("defense").value;
+  if (extension && ((["A0", "B0"].includes(arm) && defense !== "none") ||
+      (!["A0", "B0"].includes(arm) && defense === "none"))) {
+    showNotice("A0/B0 use None; A1/B1/H0/P0 require a defense profile.", true);
+    return;
+  }
+  if (adaptive && mode === "live") {
+    showNotice("Use Adaptive Ollama for C22–C28.", true);
+    return;
+  }
+  if (adaptive && mode === "live_adaptive" && arm === "A1") {
+    showNotice("A1 is a scripted replay control; choose A2, A3 or A4 for model research.", true);
+    return;
+  }
+  if (adaptive && mode === "replay" && ["A2", "A4"].includes(arm)) {
+    showNotice("A2 and A4 require Adaptive Ollama mode.", true);
+    return;
+  }
+  const split = adaptive ? $("adaptive-split").value : "development";
+  const transferId = adaptive && arm === "A5" ? $("transfer-run-id").value.trim() : null;
+  if (adaptive && arm === "A5" && (number !== 28 || split !== "holdout" || !uuidPattern.test(transferId))) {
+    showNotice("C28 A5 needs a completed development run UUID and the holdout split.", true);
+    return;
+  }
+  const rounds = adaptive ? Number($("adaptive-rounds").value) : 8;
+  if (adaptive && (!Number.isInteger(rounds) || rounds < 1 || rounds > 8)) {
+    showNotice("Adaptive rounds must be 1–8.", true);
+    return;
+  }
   const button = $("start-run");
   button.disabled = true;
   showNotice("");
   try {
-    const modelName = mode === "live" ? $("model").value.trim() : null;
-    if (mode === "live" && !modelName) throw new Error("Choose an installed local model.");
+    const needsModel = mode === "live" || mode === "live_adaptive" || mode === "live_multiagent";
+    const modelName = needsModel ? $("model").value.trim() : null;
+    if (needsModel && !modelName) throw new Error("Choose an installed local model.");
     const created = await api("/v1/runs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        scenario_id: scenario.id, mode, defense_profile: $("defense").value,
-        seed, attack_enabled: $("attack").checked,
+        scenario_id: scenario.id, mode, defense_profile: defense,
+        seed, attack_enabled: extension ? ["A0", "A1", "P0"].includes(arm) : adaptive ? arm !== "A0" : $("attack").checked,
+        arm, observer_profile: extension ? $("observer").value : adaptive ? $("adaptive-reviewer").value : "metadata_schema",
+        round_limit: rounds, split, transfer_from_run_id: transferId,
         model_name: modelName, temperature: 0,
       }),
     });
@@ -163,7 +215,12 @@ async function cancelRun() {
 
 async function initialize() {
   $("run-form").addEventListener("submit", startRun);
-  $("mode").addEventListener("change", () => renderScenarioDetail(state.scenarios.find((item) => item.id === state.selectedScenario)));
+  $("mode").addEventListener("change", () => {
+    if ($("mode").value === "live_adaptive" && $("adaptive-arm").value === "A1") $("adaptive-arm").value = "A3";
+    if ($("mode").value === "replay" && ["A2", "A4"].includes($("adaptive-arm").value)) $("adaptive-arm").value = "A1";
+    renderScenarioDetail(state.scenarios.find((item) => item.id === state.selectedScenario));
+  });
+  $("adaptive-arm").addEventListener("change", () => renderScenarioDetail(state.scenarios.find((item) => item.id === state.selectedScenario)));
   $("cancel-run").addEventListener("click", cancelRun);
   $("resume-updates").addEventListener("click", () => stream.resume());
   $("refresh-runs").addEventListener("click", () => loadRecentRuns().catch((error) => showNotice(error.message, true)));

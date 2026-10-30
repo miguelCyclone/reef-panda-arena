@@ -1,0 +1,61 @@
+{
+  "version": "booking-web-captures-v1",
+  "study_id": "0010fb81-4dd9-469a-b6c2-452a4c5500e0",
+  "captured_at": "2026-10-30",
+  "viewport": {
+    "width": 1440,
+    "height": 1150,
+    "device_scale_factor": 1
+  },
+  "method": "Local Chrome CDP on the real booking UI; existing MySQL reports compared exactly with published study rows. Result panels cropped; trace scroll container expanded to show all events. No report values edited.",
+  "captures": [
+    {
+      "path": "docs/images/booking-live-leak.png",
+      "run_id": "bcbb21f8-84ae-4e8d-b266-867ff2bef516",
+      "model": "qwen2.5:3b-instruct-q4_K_M",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "implementation_sha256": "16fb404cc5d88d58e0d0b99c97f05d70e8a646ce4486239c3549a4948c4610ee",
+      "policy": "content",
+      "clip": {
+        "x": 450.5,
+        "y": 446.71875,
+        "width": 876,
+        "height": 682.171875,
+        "scale": 1
+      },
+      "png_sha256": "58150352954352a127cad63c8ff1182e87bf38c373d594e77ca1ea3a552db310"
+    },
+    {
+      "path": "docs/images/booking-live-trace.png",
+      "run_id": "bcbb21f8-84ae-4e8d-b266-867ff2bef516",
+      "model": "qwen2.5:3b-instruct-q4_K_M",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "implementation_sha256": "16fb404cc5d88d58e0d0b99c97f05d70e8a646ce4486239c3549a4948c4610ee",
+      "policy": "content",
+      "clip": {
+        "x": 458,
+        "y": 1150.890625,
+        "width": 876,
+        "height": 571.3125,
+        "scale": 1
+      },
+      "png_sha256": "09589fe7df8233935b193fcc2540cca157e894d40ebf33ca09984854a1404cad"
+    },
+    {
+      "path": "docs/images/booking-live-canonical.png",
+      "run_id": "0e04cbea-9cec-4f5a-a3fa-6726b926beb0",
+      "model": "qwen2.5:3b-instruct-q4_K_M",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "implementation_sha256": "16fb404cc5d88d58e0d0b99c97f05d70e8a646ce4486239c3549a4948c4610ee",
+      "policy": "restricted_release",
+      "clip": {
+        "x": 450.5,
+        "y": 446.71875,
+        "width": 876,
+        "height": 682.171875,
+        "scale": 1
+      },
+      "png_sha256": "48becd82c4582f37085338a7a7b7894a2b075bb331517361c19cba333686c854"
+    }
+  ]
+}

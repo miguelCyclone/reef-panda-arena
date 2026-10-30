@@ -1,0 +1,36 @@
+{
+  "version": "booking-two-model-comparison-v1",
+  "source_tree_sha256": "603ada19bcda52b8113bbd6669611677f2a24052fe1c65985f21859403f4456f",
+  "implementation_sha256": "fbe8c5d7cd8d138996f1cd6647bb66ba74fa00aaa103fc07a32cca58c35b1672",
+  "models": [
+    [
+      "qwen-reference",
+      "qwen2.5:3b-instruct-q4_K_M"
+    ],
+    [
+      "mistral-replication",
+      "mistral:7b-instruct-q4_K_M"
+    ]
+  ],
+  "seeds": [
+    31,
+    32,
+    33
+  ],
+  "variants": [
+    0,
+    1
+  ],
+  "conditions": [
+    "A0:schema",
+    "A1:content",
+    "A1:actor_taint",
+    "A1:restricted_release"
+  ],
+  "starts_per_model": 24,
+  "pool_with_original": false,
+  "failure_handling": "Retain every started run; no replacement or selective tuning",
+  "model_order": "Qwen reference, then Mistral; sequential on the same local CPU",
+  "temperature": 0,
+  "generation_seed": 31
+}

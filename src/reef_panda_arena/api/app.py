@@ -9,24 +9,36 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from reef_panda_arena.api.manager import RunManager
+from reef_panda_arena.api.scoring_contract import ScoreFields
 from reef_panda_arena.api.web import mount_web
+from reef_panda_arena.telemetry.visual_catalog import ScenarioVisualization, describe_scenario
 from reef_panda_arena.model.ollama import ModelUnavailable
+from reef_panda_arena.model.role_contract import ActorId
 from reef_panda_arena.scenarios.loader import ScenarioLoader
+from reef_panda_arena.scenarios.unified_contract import UnifiedScenarioDefinition
 from reef_panda_arena.settings import ArenaSettings
 from reef_panda_arena.storage.queries import get_run_status, list_recent_runs, list_run_events
-from reef_panda_arena.storage.reports import list_reports
+from reef_panda_arena.storage.reports import get_unified_report, list_reports
+from reef_panda_arena.storage.lineage import load_run_lineage
 
 
 class StartRunRequest(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
 
-    scenario_id: str = Field(pattern=r"^C0[0-9]$")
-    mode: str = Field(pattern=r"^(replay|live)$")
-    defense_profile: str = Field(pattern=r"^(none|allowlist|content|taint|combined)$")
+    scenario_id: str = Field(pattern=r"^C(?:0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-3])$")
+    mode: str = Field(pattern=r"^(replay|live|live_adaptive|live_multiagent)$")
+    defense_profile: str = Field(pattern=r"^(none|allowlist|content|taint|combined|declassify_strict|allowlist_only|content_only|actor_local|transitive|scoped_release|strict_no_release)$")
     seed: int = Field(ge=0, lt=2**64)
     model_name: str | None = Field(default=None, min_length=1, max_length=160)
     temperature: float = Field(default=0.0, ge=0, le=1)
+    top_p: float | None = Field(default=None, ge=0, le=1)
+    generation_seed: int | None = Field(default=None, ge=0, lt=2**31)
     attack_enabled: bool = True
+    arm: str | None = Field(default=None, pattern=r"^(B0|B1|A[0-5]|H0|P0)$")
+    round_limit: int = Field(default=8, ge=1, le=8)
+    split: str = Field(default="development", pattern=r"^(development|holdout)$")
+    transfer_from_run_id: str | None = None
+    observer_profile: str = Field(default="metadata_schema", pattern=r"^(literal_content|metadata_schema|structural_math|provenance_release)$")
 
 
 class RunCreated(BaseModel):
@@ -40,19 +52,33 @@ class ScenarioInfo(BaseModel):
     title: str
     channel: str
     available_modes: tuple[str, ...]
+    visualization: ScenarioVisualization
 
 
-class RunStatus(BaseModel):
+class RunStatus(ScoreFields):
     run_id: str
     scenario_id: str
     mode: str
     defense_profile: str
     status: str
     model_name: str | None
-    failure_code: str | None
-    secret_escaped: bool | None
-    benign_task_success: bool | None
-    accepted_outbound_events: int | None
+    compromised_roles: list[ActorId] | None = Field(default=None, max_length=2)
+    model_temperature: str | None = None
+    model_top_p: float | None = Field(default=None, ge=0, le=1)
+    model_generation_seed: int | None = Field(default=None, ge=0, lt=2**31)
+    model_digest: str | None = Field(default=None, max_length=160)
+    source_digest: str | None = Field(default=None, max_length=64)
+    prompt_version: str | None = Field(default=None, max_length=96)
+    seed: int | None = Field(default=None, ge=0, lt=2**64)
+    partial_information_score: float | None = None
+    alerts: int | None = None
+    legitimate_actions_blocked: int | None = None
+    arm: str | None = None
+    observer_profile: str | None = None
+    verified_bits: int | None = None
+    rounds_used: int | None = None
+    attacker_model_calls: int | None = None
+    stop_reason: str | None = None
 
 
 class EventPage(BaseModel):
@@ -78,6 +104,8 @@ def create_app(settings: ArenaSettings | None = None,
     app = FastAPI(title="Reef Panda Covert Channel Arena", lifespan=lifespan)
     app.state.run_manager = manager
     mount_web(app)
+    from reef_panda_arena.api.booking import mount_booking
+    mount_booking(app, manager, settings)
 
     @app.get("/health")
     async def health() -> dict[str, str]:
@@ -89,8 +117,12 @@ def create_app(settings: ArenaSettings | None = None,
         return [
             ScenarioInfo(
                 id=item.id, difficulty=item.level, title=item.title,
-                channel=item.allowed_channels[0].tool,
-                available_modes=("replay", "live") if item.id == "C00" else ("replay",),
+                visualization=describe_scenario(item),
+                channel=(
+                    item.boundary if isinstance(item, UnifiedScenarioDefinition)
+                    else item.allowed_channels[0].tool
+                ),
+                available_modes=item.mode_support,
             )
             for item in (loader.load(scenario_id) for scenario_id in loader.list_ids())
         ]
@@ -118,7 +150,8 @@ def create_app(settings: ArenaSettings | None = None,
 
     @app.get("/v1/runs", response_model=list[RunStatus])
     async def recent_runs(limit: int = Query(20, ge=1, le=50)) -> list[RunStatus]:
-        return [RunStatus.model_validate(row) for row in await list_recent_runs(settings, limit)]
+        return [RunStatus.model_validate(row) for row in await list_recent_runs(
+            settings, limit, scenario_ids=tuple(ScenarioLoader().list_ids()))]
 
     @app.get("/v1/runs/{run_id}", response_model=RunStatus)
     async def run_status(run_id: UUID) -> RunStatus:
@@ -174,12 +207,26 @@ def create_app(settings: ArenaSettings | None = None,
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
 
+    @app.get("/v1/runs/{run_id}/lineage")
+    async def lineage_report(run_id: UUID) -> dict:
+        graph = await load_run_lineage(settings, str(run_id))
+        if graph is None:
+            raise HTTPException(404, "Run not found")
+        return graph
+
+    @app.get("/v1/runs/{run_id}/unified-report")
+    async def unified_report(run_id: UUID) -> dict:
+        projected = await get_unified_report(settings, str(run_id))
+        if projected is None:
+            raise HTTPException(404, "Unified report not found")
+        return projected
+
     @app.get("/v1/runs/{run_id}/report")
     async def report(run_id: UUID) -> dict:
         row = await status_for(str(run_id))
         reports = await list_reports(settings, str(run_id), limit=1)
         if not reports:
-            raise HTTPException(409, f"Run has no completed score ({row['status']})")
+            return RunStatus.model_validate(row).model_dump()
         return reports[0]
 
     @app.post("/v1/runs/{run_id}/cancel", response_model=RunStatus)

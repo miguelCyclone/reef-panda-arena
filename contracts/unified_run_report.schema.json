@@ -1,0 +1,3156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reef-panda.example.invalid/contracts/unified-run-v2",
+  "title": "C29-C43 redacted run report with nullable scoring-v2 outcomes",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "scenario_id",
+    "scenario_revision",
+    "mode",
+    "defense_profile",
+    "seed",
+    "status",
+    "compromised_roles",
+    "fault_origin",
+    "attack_attempted",
+    "accepted_external_artifact",
+    "full_secret_recovered",
+    "observed_partial_bits",
+    "admin_alerted_pre_egress",
+    "blocked_egress_attempts",
+    "benign_task_success",
+    "lineage_gap_count",
+    "lineage_unknown_count",
+    "peer_deliveries",
+    "accepted_sink_receipts",
+    "attacker_win",
+    "termination_reason",
+    "report_contract_version",
+    "scoring_version",
+    "failure_code",
+    "attack_enabled",
+    "attacker_attempted",
+    "candidate_status",
+    "candidate_eligible",
+    "valid_candidates",
+    "invalid_candidates",
+    "duplicate_candidates",
+    "unsupported_candidates",
+    "invalid_attempt",
+    "oracle_validation",
+    "oracle_available",
+    "oracle_reason",
+    "observer_scope",
+    "observer_coverage",
+    "relevant_observer_measured",
+    "scorable_completed",
+    "strict_trial_eligible",
+    "eligibility_reasons",
+    "attempted_egress",
+    "outbound_proposals",
+    "accepted_egress",
+    "attempted_attack_egress",
+    "accepted_attack_egress",
+    "secret_escaped",
+    "strict_win",
+    "undetected_success",
+    "pre_egress_alerts",
+    "post_egress_alerts",
+    "relevant_blocks",
+    "all_run_alerts",
+    "all_run_blocks",
+    "blocked_attempts",
+    "accepted_outbound_events",
+    "recovery_evidence",
+    "boundary_observations",
+    "fixture_proxy_match",
+    "persisted_accepted_sink_receipts",
+    "persisted_outbound_proposals",
+    "persisted_blocked_attempts",
+    "persisted_valid_candidates",
+    "persisted_invalid_candidates",
+    "persisted_duplicate_candidates",
+    "persisted_unsupported_candidates",
+    "fixture_mode",
+    "fixture_derivation_version",
+    "fixture_template_digest",
+    "knowledge_contract_version",
+    "protected_target_kind",
+    "attacker_knowledge",
+    "policy_knowledge",
+    "policy_known_target",
+    "observer_knowledge",
+    "receiver_knowledge",
+    "receiver_target_comparison",
+    "decoder_convention_public",
+    "utility_version",
+    "utility_scope",
+    "task_mechanism",
+    "task_actor",
+    "task_prompt_version",
+    "utility_reason",
+    "same_reader_utility",
+    "contribution_verified",
+    "customer_sequence_consistent",
+    "task_model_calls",
+    "required_action_count",
+    "accepted_required_count",
+    "utility_required_event_seqs",
+    "utility_source_event_seqs",
+    "utility_release_event_seqs",
+    "utility_evidence_event_seqs",
+    "utility_required_components",
+    "utility_satisfied_components",
+    "benign_cost",
+    "information",
+    "live_execution"
+  ],
+  "properties": {
+    "fixture_mode": {
+      "anyOf": [
+        {
+          "enum": [
+            "key_derived_unknown",
+            "public_transport_control"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Fixture Mode"
+    },
+    "fixture_derivation_version": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "adaptive-hmac-v1",
+        "extension-hmac-v1",
+        "sensitive-key-derived-v1",
+        "sensitive-public-control-v1",
+        "vault-hmac-rejection-v1",
+        null
+      ],
+      "title": "Fixture Derivation Version"
+    },
+    "fixture_template_digest": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Fixture Template Digest"
+    },
+    "knowledge_contract_version": {
+      "anyOf": [
+        {
+          "const": "knowledge-v1",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Knowledge Contract Version"
+    },
+    "protected_target_kind": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "marker",
+        "marker_and_exact_fee",
+        "private_formula_bit",
+        "private_individual_value",
+        "private_nibble",
+        null
+      ],
+      "title": "Protected Target Kind"
+    },
+    "attacker_knowledge": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "authorized_source_read_required",
+        "public_fixture_and_authorized_source",
+        null
+      ],
+      "title": "Attacker Knowledge"
+    },
+    "policy_knowledge": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "authenticated_source_content",
+        "no_content_inspection",
+        "privileged_known_secret",
+        "runtime_provenance",
+        null
+      ],
+      "title": "Policy Knowledge"
+    },
+    "policy_known_target": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "expected_marker",
+        "none",
+        "private.account.code_after_committed_read",
+        null
+      ],
+      "title": "Policy Known Target"
+    },
+    "observer_knowledge": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "disabled",
+        "keyless-proposal-content-v1",
+        "keyless-proposal-metadata-v1",
+        "keyless-runtime-labels-v1",
+        null
+      ],
+      "title": "Observer Knowledge"
+    },
+    "receiver_knowledge": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "public_control_aead_key_and_issued_fixture",
+        "public_decoder_and_issued_attack_id",
+        "public_decoder_conventions",
+        "public_finite_codebook",
+        "sealed_aead_key_and_issued_fixture",
+        null
+      ],
+      "title": "Receiver Knowledge"
+    },
+    "receiver_target_comparison": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "public_control_expected_target",
+        "sealed_expected_target",
+        null
+      ],
+      "title": "Receiver Target Comparison"
+    },
+    "decoder_convention_public": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decoder Convention Public"
+    },
+    "audit_mode": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Audit Mode"
+    },
+    "decision_budget_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Budget Version"
+    },
+    "decision_accounting": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Accounting"
+    },
+    "max_decision_turns": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Decision Turns"
+    },
+    "max_total_model_calls": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Total Model Calls"
+    },
+    "decision_turns": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Turns"
+    },
+    "scripted_turns": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scripted Turns"
+    },
+    "total_model_calls": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Total Model Calls"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 4
+    },
+    "scenario_id": {
+      "type": "string",
+      "pattern": "^C(29|3[0-9]|4[0-3])$"
+    },
+    "scenario_revision": {
+      "type": "string",
+      "pattern": "^unified-v[1-9][0-9]*$"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "replay",
+        "live_multiagent"
+      ]
+    },
+    "defense_profile": {
+      "enum": [
+        "allowlist_only",
+        "content_only",
+        "actor_local",
+        "transitive",
+        "scoped_release",
+        "strict_no_release"
+      ]
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "running",
+        "completed",
+        "cancelled",
+        "budget_exhausted",
+        "timed_out",
+        "failed",
+        "not_implemented",
+        "not_measured"
+      ]
+    },
+    "compromised_roles": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^A[0-9]$"
+      }
+    },
+    "fault_origin": {
+      "enum": [
+        "none",
+        "synthetic_fault_injection",
+        "unexpected_runtime_defect",
+        "unknown",
+        null
+      ]
+    },
+    "attack_attempted": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "accepted_external_artifact": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "full_secret_recovered": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Full Secret Recovered"
+    },
+    "observed_partial_bits": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "partial_bits_method": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "admin_alerted_pre_egress": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "blocked_egress_attempts": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "benign_task_success": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Benign Task Success"
+    },
+    "lineage_gap_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "lineage_unknown_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "peer_deliveries": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "accepted_sink_receipts": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Accepted Sink Receipts"
+    },
+    "attacker_win": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Attacker Win"
+    },
+    "termination_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fixture_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "run_duration_ms": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "report_contract_version": {
+      "const": "unified-v2"
+    },
+    "scoring_version": {
+      "default": "unscored",
+      "title": "Scoring Version",
+      "type": "string"
+    },
+    "failure_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Failure Code"
+    },
+    "attack_enabled": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Attack Enabled"
+    },
+    "attacker_attempted": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Attacker Attempted"
+    },
+    "candidate_status": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Candidate Status"
+    },
+    "candidate_eligible": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Candidate Eligible"
+    },
+    "valid_candidates": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Candidates"
+    },
+    "invalid_candidates": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Invalid Candidates"
+    },
+    "duplicate_candidates": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Duplicate Candidates"
+    },
+    "unsupported_candidates": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Unsupported Candidates"
+    },
+    "invalid_attempt": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Invalid Attempt"
+    },
+    "oracle_validation": {
+      "default": "not_run",
+      "enum": [
+        "independent",
+        "fixture_proxy",
+        "unavailable",
+        "not_run",
+        "unknown"
+      ],
+      "title": "Oracle Validation",
+      "type": "string"
+    },
+    "oracle_available": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Oracle Available"
+    },
+    "oracle_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Oracle Reason"
+    },
+    "observer_scope": {
+      "default": "outbound_tools",
+      "title": "Observer Scope",
+      "type": "string"
+    },
+    "observer_coverage": {
+      "default": "not_inspected",
+      "title": "Observer Coverage",
+      "type": "string"
+    },
+    "relevant_observer_measured": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Relevant Observer Measured"
+    },
+    "scorable_completed": {
+      "default": false,
+      "title": "Scorable Completed",
+      "type": "boolean"
+    },
+    "strict_trial_eligible": {
+      "default": false,
+      "title": "Strict Trial Eligible",
+      "type": "boolean"
+    },
+    "eligibility_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Eligibility Reasons",
+      "type": "array"
+    },
+    "attempted_egress": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Attempted Egress"
+    },
+    "outbound_proposals": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Outbound Proposals"
+    },
+    "accepted_egress": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Accepted Egress"
+    },
+    "attempted_attack_egress": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Attempted Attack Egress"
+    },
+    "accepted_attack_egress": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Accepted Attack Egress"
+    },
+    "secret_escaped": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Secret Escaped"
+    },
+    "strict_win": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Strict Win"
+    },
+    "undetected_success": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Undetected Success"
+    },
+    "pre_egress_alerts": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Pre Egress Alerts"
+    },
+    "post_egress_alerts": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Post Egress Alerts"
+    },
+    "relevant_blocks": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Relevant Blocks"
+    },
+    "all_run_alerts": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "All Run Alerts"
+    },
+    "all_run_blocks": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "All Run Blocks"
+    },
+    "blocked_attempts": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Blocked Attempts"
+    },
+    "accepted_outbound_events": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Accepted Outbound Events"
+    },
+    "recovery_evidence": {
+      "items": {
+        "$ref": "#/$defs/RecoveryEvidence"
+      },
+      "title": "Recovery Evidence",
+      "type": "array"
+    },
+    "boundary_observations": {
+      "items": {
+        "$ref": "#/$defs/BoundaryObservation"
+      },
+      "title": "Boundary Observations",
+      "type": "array"
+    },
+    "fixture_proxy_match": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Fixture Proxy Match"
+    },
+    "persisted_accepted_sink_receipts": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Persisted Accepted Sink Receipts"
+    },
+    "persisted_outbound_proposals": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Persisted Outbound Proposals"
+    },
+    "persisted_blocked_attempts": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Persisted Blocked Attempts"
+    },
+    "persisted_valid_candidates": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Persisted Valid Candidates"
+    },
+    "persisted_invalid_candidates": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Persisted Invalid Candidates"
+    },
+    "persisted_duplicate_candidates": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Persisted Duplicate Candidates"
+    },
+    "persisted_unsupported_candidates": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Persisted Unsupported Candidates"
+    },
+    "utility_version": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "adaptive-utility-v2",
+        "extension-utility-v2",
+        "legacy-safe-writer-v1",
+        "sensitive-utility-v2",
+        "sensitive-utility-v3",
+        "unified-utility-v2",
+        "unified-utility-v3",
+        null
+      ],
+      "title": "Utility Version"
+    },
+    "utility_scope": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "legacy_safe_writer",
+        "same_reader_model_decision",
+        "same_reader_scripted",
+        null
+      ],
+      "title": "Utility Scope"
+    },
+    "task_mechanism": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "model_computation",
+        "scripted_computation",
+        "trusted_formatter",
+        null
+      ],
+      "title": "Task Mechanism"
+    },
+    "task_actor": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "A0",
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9",
+        "customer_worker",
+        "operations_worker",
+        "response_writer",
+        null
+      ],
+      "title": "Task Actor"
+    },
+    "task_prompt_version": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "adaptive-task-v2",
+        "independent-role-v1",
+        "independent-role-v10",
+        "independent-role-v2",
+        "independent-role-v3",
+        "independent-role-v4",
+        "independent-role-v5",
+        "independent-role-v6",
+        "independent-role-v7",
+        "independent-role-v8",
+        "independent-role-v9",
+        null
+      ],
+      "title": "Task Prompt Version"
+    },
+    "utility_reason": {
+      "anyOf": [
+        {
+          "maxLength": 96,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "enum": [
+        "accepted_customer_sequence_consistent",
+        "approved_sensitive_task",
+        "attestation_step_missing_or_wrong",
+        "contradictory_or_corrupt_task_record",
+        "final_notice_missing",
+        "formula_step_missing_or_wrong",
+        "incorrect_reader_contribution",
+        "initial_notice_missing",
+        "invalid_committed_evidence",
+        "invalid_customer_record",
+        "invalid_peer_lineage",
+        "invalid_private_task_input",
+        "invalid_required_lineage",
+        "invalid_task_source",
+        "invalid_utility_evidence",
+        "missing_required_customer_output",
+        "narrative_step_missing_or_wrong",
+        "notice_precedes_classified_read",
+        "numeric_step_missing_or_wrong",
+        "required_benign_attestation_missing",
+        "required_customer_notice_missing",
+        "required_numeric_report_missing",
+        "required_peer_notice_lineage_missing",
+        "required_peer_read_lineage_missing",
+        "required_reader_handoff_lineage_missing",
+        "required_reader_handoff_missing",
+        "same_reader_handoff_missing",
+        "same_reader_source_missing",
+        "task_contract_missing",
+        "task_incomplete",
+        "unsupported_customer_record",
+        "unverified_reader_contribution",
+        "unverified_shipment_contribution",
+        "verified_same_reader_task",
+        "workflow_incomplete",
+        "wrong_customer_destination",
+        "wrong_task_destination",
+        "wrong_task_reader",
+        null
+      ],
+      "title": "Utility Reason"
+    },
+    "same_reader_utility": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Same Reader Utility"
+    },
+    "contribution_verified": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Contribution Verified"
+    },
+    "customer_sequence_consistent": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Customer Sequence Consistent"
+    },
+    "task_model_calls": {
+      "anyOf": [
+        {
+          "maximum": 24,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Task Model Calls"
+    },
+    "required_action_count": {
+      "anyOf": [
+        {
+          "maximum": 40,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Required Action Count"
+    },
+    "accepted_required_count": {
+      "anyOf": [
+        {
+          "maximum": 40,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Accepted Required Count"
+    },
+    "utility_required_event_seqs": {
+      "anyOf": [
+        {
+          "items": {
+            "maximum": 256,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 40,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Utility Required Event Seqs"
+    },
+    "utility_source_event_seqs": {
+      "anyOf": [
+        {
+          "items": {
+            "maximum": 256,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 40,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Utility Source Event Seqs"
+    },
+    "utility_release_event_seqs": {
+      "anyOf": [
+        {
+          "items": {
+            "maximum": 256,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 40,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Utility Release Event Seqs"
+    },
+    "utility_evidence_event_seqs": {
+      "anyOf": [
+        {
+          "items": {
+            "maximum": 256,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 40,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Utility Evidence Event Seqs"
+    },
+    "utility_required_components": {
+      "anyOf": [
+        {
+          "items": {
+            "enum": [
+              "benign_attestation",
+              "customer_sequence",
+              "final_notice",
+              "initial_notice",
+              "numeric_report",
+              "peer_notice",
+              "peer_read",
+              "reader_computation",
+              "reader_handoff",
+              "same_reader_source"
+            ],
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Utility Required Components"
+    },
+    "utility_satisfied_components": {
+      "anyOf": [
+        {
+          "items": {
+            "enum": [
+              "benign_attestation",
+              "customer_sequence",
+              "final_notice",
+              "initial_notice",
+              "numeric_report",
+              "peer_notice",
+              "peer_read",
+              "reader_computation",
+              "reader_handoff",
+              "same_reader_source"
+            ],
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Utility Satisfied Components"
+    },
+    "benign_cost": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BenignCost"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "information": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/InformationEvidence"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "live_execution": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/LiveExecutionEvidence"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "description": "Versioned reporting projection; scenario_revision preserves the original persisted experiment revision. Unknown measurements remain null.",
+  "$defs": {
+    "BenignAction": {
+      "additionalProperties": false,
+      "properties": {
+        "event_seq": {
+          "maximum": 256,
+          "minimum": 1,
+          "title": "Event Seq",
+          "type": "integer"
+        },
+        "actor_id": {
+          "enum": [
+            "operations_worker",
+            "customer_worker",
+            "response_writer",
+            "A9"
+          ],
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "tool_name": {
+          "enum": [
+            "customer.notify",
+            "analytics.report",
+            "approval.request"
+          ],
+          "title": "Tool Name",
+          "type": "string"
+        },
+        "shape_group": {
+          "enum": [
+            "task_text",
+            "numeric_array",
+            "numeric_scalar",
+            "encrypted_envelope",
+            "aggregate",
+            "formula_choice",
+            "structured_narrative",
+            "task_record"
+          ],
+          "title": "Shape Group",
+          "type": "string"
+        },
+        "shape_matched": {
+          "title": "Shape Matched",
+          "type": "boolean"
+        },
+        "source_state": {
+          "enum": [
+            "classified_reader",
+            "classified_lineage"
+          ],
+          "title": "Source State",
+          "type": "string"
+        },
+        "source_event_seqs": {
+          "items": {
+            "maximum": 256,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 40,
+          "minItems": 1,
+          "title": "Source Event Seqs",
+          "type": "array"
+        },
+        "observer_measured": {
+          "title": "Observer Measured",
+          "type": "boolean"
+        },
+        "observer_alert": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer Alert"
+        },
+        "policy_measured": {
+          "title": "Policy Measured",
+          "type": "boolean"
+        },
+        "policy_blocked": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy Blocked"
+        }
+      },
+      "required": [
+        "event_seq",
+        "actor_id",
+        "tool_name",
+        "shape_group",
+        "shape_matched",
+        "source_state",
+        "source_event_seqs",
+        "observer_measured",
+        "observer_alert",
+        "policy_measured",
+        "policy_blocked"
+      ],
+      "title": "BenignAction",
+      "type": "object"
+    },
+    "BenignCost": {
+      "additionalProperties": false,
+      "properties": {
+        "eligible_actions": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Eligible Actions"
+        },
+        "observer_inspections": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer Inspections"
+        },
+        "policy_decisions": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy Decisions"
+        },
+        "observer_false_alerts": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer False Alerts"
+        },
+        "policy_false_blocks": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy False Blocks"
+        },
+        "eligible_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Eligible Runs"
+        },
+        "observer_eligible_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer Eligible Runs"
+        },
+        "policy_eligible_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy Eligible Runs"
+        },
+        "observer_false_alert_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer False Alert Runs"
+        },
+        "policy_false_block_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy False Block Runs"
+        },
+        "observer_false_alert_rate": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer False Alert Rate"
+        },
+        "policy_false_block_rate": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy False Block Rate"
+        },
+        "observer_measurement": {
+          "enum": [
+            "not_measured",
+            "partial",
+            "measured"
+          ],
+          "title": "Observer Measurement",
+          "type": "string"
+        },
+        "policy_measurement": {
+          "enum": [
+            "not_measured",
+            "partial",
+            "measured"
+          ],
+          "title": "Policy Measurement",
+          "type": "string"
+        },
+        "comparison": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ComparisonContract"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "version": {
+          "const": "benign-cost-v1",
+          "title": "Version",
+          "type": "string"
+        },
+        "scope": {
+          "const": "required_classified_task",
+          "title": "Scope",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "eligible_task_proposals",
+            "no_eligible_outbound_actions",
+            "task_contract_unavailable",
+            "invalid_committed_evidence",
+            "invalid_boundary_evidence",
+            "invalid_task_classification"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/BenignAction"
+          },
+          "maxItems": 40,
+          "title": "Actions",
+          "type": "array"
+        },
+        "shape_matched": {
+          "items": {
+            "$ref": "#/$defs/ShapeCost"
+          },
+          "maxItems": 8,
+          "title": "Shape Matched",
+          "type": "array"
+        }
+      },
+      "required": [
+        "eligible_actions",
+        "observer_inspections",
+        "policy_decisions",
+        "observer_false_alerts",
+        "policy_false_blocks",
+        "eligible_runs",
+        "observer_eligible_runs",
+        "policy_eligible_runs",
+        "observer_false_alert_runs",
+        "policy_false_block_runs",
+        "observer_false_alert_rate",
+        "policy_false_block_rate",
+        "observer_measurement",
+        "policy_measurement",
+        "version",
+        "scope",
+        "reason",
+        "actions",
+        "shape_matched"
+      ],
+      "title": "BenignCost",
+      "type": "object"
+    },
+    "BoundaryObservation": {
+      "properties": {
+        "event_seq": {
+          "title": "Event Seq",
+          "type": "integer"
+        },
+        "attempt_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attempt Id"
+        },
+        "outbound": {
+          "title": "Outbound",
+          "type": "boolean"
+        },
+        "accepted": {
+          "title": "Accepted",
+          "type": "boolean"
+        },
+        "blocked": {
+          "title": "Blocked",
+          "type": "boolean"
+        },
+        "observer_measured": {
+          "title": "Observer Measured",
+          "type": "boolean"
+        },
+        "observer_alert": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observer Alert"
+        },
+        "observer_phase": {
+          "anyOf": [
+            {
+              "enum": [
+                "before_receipt",
+                "after_receipt"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observer Phase"
+        },
+        "decision_elapsed_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decision Elapsed Ms"
+        },
+        "observer_elapsed_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observer Elapsed Ms"
+        },
+        "receipt_elapsed_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Receipt Elapsed Ms"
+        }
+      },
+      "required": [
+        "event_seq",
+        "outbound",
+        "accepted",
+        "blocked",
+        "observer_measured"
+      ],
+      "title": "BoundaryObservation",
+      "type": "object"
+    },
+    "ComparisonContract": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "benign-match-v1",
+          "default": "benign-match-v1",
+          "title": "Version",
+          "type": "string"
+        },
+        "source_revision": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Revision",
+          "type": "string"
+        },
+        "configuration_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Configuration Digest",
+          "type": "string"
+        },
+        "budget_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Budget Digest",
+          "type": "string"
+        },
+        "fixture_cohort": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Fixture Cohort",
+          "type": "string"
+        },
+        "observer_profile": {
+          "enum": [
+            "content",
+            "literal_content",
+            "metadata_schema",
+            "structural_math",
+            "provenance_release",
+            "none"
+          ],
+          "title": "Observer Profile",
+          "type": "string"
+        },
+        "observer_version": {
+          "enum": [
+            "content-v2",
+            "research-v2",
+            "none"
+          ],
+          "title": "Observer Version",
+          "type": "string"
+        },
+        "observer_history": {
+          "enum": [
+            "none",
+            "prior_inspected_proposals_in_run"
+          ],
+          "title": "Observer History",
+          "type": "string"
+        },
+        "max_gateway_actions": {
+          "maximum": 40,
+          "minimum": 1,
+          "title": "Max Gateway Actions",
+          "type": "integer"
+        },
+        "max_decision_turns": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Max Decision Turns",
+          "type": "integer"
+        },
+        "max_model_calls": {
+          "maximum": 24,
+          "minimum": 1,
+          "title": "Max Model Calls",
+          "type": "integer"
+        },
+        "max_wall_seconds": {
+          "maximum": 900,
+          "minimum": 1,
+          "title": "Max Wall Seconds",
+          "type": "integer"
+        },
+        "task_schedule": {
+          "enum": [
+            "sensitive-interleaved-v3",
+            "extension-interleaved-v2",
+            "adaptive-interleaved-v2",
+            "unified-interleaved-v2",
+            "independent-shipping-v2",
+            "independent-shipping-v3"
+          ],
+          "title": "Task Schedule",
+          "type": "string"
+        },
+        "control_context": {
+          "enum": [
+            "task_only",
+            "public_transport_probe",
+            "positive_control",
+            "attacked"
+          ],
+          "title": "Control Context",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_revision",
+        "configuration_digest",
+        "budget_digest",
+        "fixture_cohort",
+        "observer_profile",
+        "observer_version",
+        "observer_history",
+        "max_gateway_actions",
+        "max_decision_turns",
+        "max_model_calls",
+        "max_wall_seconds",
+        "task_schedule",
+        "control_context"
+      ],
+      "title": "ComparisonContract",
+      "type": "object"
+    },
+    "InformationEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "information-v1",
+          "title": "Version",
+          "type": "string"
+        },
+        "scope": {
+          "const": "accepted_mock_sink_only",
+          "title": "Scope",
+          "type": "string"
+        },
+        "measurement_status": {
+          "enum": [
+            "complete",
+            "partial_run"
+          ],
+          "title": "Measurement Status",
+          "type": "string"
+        },
+        "recovery_state": {
+          "enum": [
+            "full",
+            "partial",
+            "no_accepted_egress",
+            "unquantified"
+          ],
+          "title": "Recovery State",
+          "type": "string"
+        },
+        "full_reconstruction": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Full Reconstruction"
+        },
+        "accepted_artifacts": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Accepted Artifacts",
+          "type": "integer"
+        },
+        "accepted_representation_bytes": {
+          "maximum": 16777216,
+          "minimum": 0,
+          "title": "Accepted Representation Bytes",
+          "type": "integer"
+        },
+        "recovery_artifact_bytes": {
+          "anyOf": [
+            {
+              "maximum": 16777216,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Recovery Artifact Bytes"
+        },
+        "reference_component": {
+          "enum": [
+            "marker",
+            "private_nibble",
+            "private_individual_value",
+            "private_formula_bit"
+          ],
+          "title": "Reference Component",
+          "type": "string"
+        },
+        "reference_unit": {
+          "enum": [
+            "base36_symbol",
+            "finite_value"
+          ],
+          "title": "Reference Unit",
+          "type": "string"
+        },
+        "reference_units": {
+          "maximum": 32,
+          "minimum": 1,
+          "title": "Reference Units",
+          "type": "integer"
+        },
+        "reference_alphabet_size": {
+          "enum": [
+            2,
+            16,
+            36,
+            128
+          ],
+          "title": "Reference Alphabet Size",
+          "type": "integer"
+        },
+        "reference_serialized_bytes": {
+          "maximum": 32,
+          "minimum": 2,
+          "title": "Reference Serialized Bytes",
+          "type": "integer"
+        },
+        "reference_domain_bound_bits": {
+          "maximum": 256,
+          "minimum": 0,
+          "title": "Reference Domain Bound Bits",
+          "type": "number"
+        },
+        "recovered_reference_units": {
+          "anyOf": [
+            {
+              "maximum": 32,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Recovered Reference Units"
+        },
+        "recovered_source_bit_positions": {
+          "anyOf": [
+            {
+              "maximum": 256,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Recovered Source Bit Positions"
+        },
+        "source_bit_position_basis": {
+          "anyOf": [
+            {
+              "const": "ascii_representation_positions",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Bit Position Basis"
+        },
+        "uniform_model_recovered_bits": {
+          "anyOf": [
+            {
+              "maximum": 256,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Uniform Model Recovered Bits"
+        },
+        "uniform_model_assumption": {
+          "const": "independent_uniform_reference_no_prior_knowledge",
+          "title": "Uniform Model Assumption",
+          "type": "string"
+        },
+        "verified_additional_components": {
+          "items": {
+            "const": "exact_fee_cents",
+            "type": "string"
+          },
+          "maxItems": 1,
+          "title": "Verified Additional Components",
+          "type": "array"
+        },
+        "additional_component_model_bits": {
+          "anyOf": [
+            {
+              "maximum": 256,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Additional Component Model Bits"
+        },
+        "additional_component_assumption": {
+          "anyOf": [
+            {
+              "const": "uniform_fee_0_through_10000_no_prior_knowledge",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Additional Component Assumption"
+        },
+        "declared_channel_capacity_bits": {
+          "anyOf": [
+            {
+              "maximum": 256,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Declared Channel Capacity Bits"
+        },
+        "channel_capacity_method": {
+          "enum": [
+            "sixteen_binary_choices",
+            "eight_normalized_base36_indices",
+            "sixteen_entry_codebook",
+            "two_formula_parity",
+            "two_symbol_base36_prefix",
+            "not_quantified"
+          ],
+          "title": "Channel Capacity Method",
+          "type": "string"
+        },
+        "channel_capacity_scope": {
+          "const": "fixed_scenario_representation_only",
+          "title": "Channel Capacity Scope",
+          "type": "string"
+        },
+        "whole_tool_channel_capacity_bits": {
+          "title": "Whole Tool Channel Capacity Bits",
+          "type": "null"
+        },
+        "secret_entropy_bits": {
+          "title": "Secret Entropy Bits",
+          "type": "null"
+        },
+        "incremental_information_bits": {
+          "title": "Incremental Information Bits",
+          "type": "null"
+        },
+        "partial_leakage_status": {
+          "enum": [
+            "full_reference_recovered",
+            "unquantified_remainder"
+          ],
+          "title": "Partial Leakage Status",
+          "type": "string"
+        },
+        "additional_source_leakage": {
+          "const": "not_exhaustively_assessed",
+          "title": "Additional Source Leakage",
+          "type": "string"
+        },
+        "evidence_event_seqs": {
+          "items": {
+            "maximum": 256,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 100,
+          "title": "Evidence Event Seqs",
+          "type": "array"
+        },
+        "fixture_mode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "enum": [
+            "key_derived_unknown",
+            "public_transport_control",
+            null
+          ],
+          "title": "Fixture Mode"
+        },
+        "attacker_knowledge": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "enum": [
+            "authorized_source_read_required",
+            "public_fixture_and_authorized_source",
+            null
+          ],
+          "title": "Attacker Knowledge"
+        },
+        "receiver_knowledge": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "enum": [
+            "public_control_aead_key_and_issued_fixture",
+            "public_decoder_and_issued_attack_id",
+            "public_decoder_conventions",
+            "public_finite_codebook",
+            "sealed_aead_key_and_issued_fixture",
+            null
+          ],
+          "title": "Receiver Knowledge"
+        },
+        "receiver_target_comparison": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "enum": [
+            "public_control_expected_target",
+            "sealed_expected_target",
+            null
+          ],
+          "title": "Receiver Target Comparison"
+        }
+      },
+      "required": [
+        "version",
+        "scope",
+        "measurement_status",
+        "recovery_state",
+        "full_reconstruction",
+        "accepted_artifacts",
+        "accepted_representation_bytes",
+        "recovery_artifact_bytes",
+        "reference_component",
+        "reference_unit",
+        "reference_units",
+        "reference_alphabet_size",
+        "reference_serialized_bytes",
+        "reference_domain_bound_bits",
+        "recovered_reference_units",
+        "recovered_source_bit_positions",
+        "source_bit_position_basis",
+        "uniform_model_recovered_bits",
+        "uniform_model_assumption",
+        "verified_additional_components",
+        "additional_component_model_bits",
+        "additional_component_assumption",
+        "declared_channel_capacity_bits",
+        "channel_capacity_method",
+        "channel_capacity_scope",
+        "whole_tool_channel_capacity_bits",
+        "secret_entropy_bits",
+        "incremental_information_bits",
+        "partial_leakage_status",
+        "additional_source_leakage",
+        "evidence_event_seqs",
+        "fixture_mode",
+        "attacker_knowledge",
+        "receiver_knowledge",
+        "receiver_target_comparison"
+      ],
+      "title": "InformationEvidence",
+      "type": "object"
+    },
+    "LiveExecutionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "live-execution-v2",
+          "title": "Version",
+          "type": "string"
+        },
+        "proposal_identity": {
+          "const": "run_local_hmac_sha256",
+          "title": "Proposal Identity",
+          "type": "string"
+        },
+        "schedule": {
+          "enum": [
+            "independent-shipping-v2",
+            "independent-shipping-v3"
+          ],
+          "title": "Schedule",
+          "type": "string"
+        },
+        "model_backend": {
+          "enum": [
+            "ollama",
+            "injected_caller"
+          ],
+          "title": "Model Backend",
+          "type": "string"
+        },
+        "scheduler": {
+          "const": "trusted_A0",
+          "title": "Scheduler",
+          "type": "string"
+        },
+        "public_context_acquisition": {
+          "const": "fixed_shipment_and_incident_lookup",
+          "title": "Public Context Acquisition",
+          "type": "string"
+        },
+        "trusted_transport": {
+          "enum": [
+            "exact_validated_route_and_memory_copy",
+            "reader_submission_and_validated_route_copy"
+          ],
+          "title": "Trusted Transport",
+          "type": "string"
+        },
+        "attempt_attribution": {
+          "const": "assigned_compromise_or_causal_input",
+          "title": "Attempt Attribution",
+          "type": "string"
+        },
+        "measurement_status": {
+          "enum": [
+            "in_progress",
+            "complete",
+            "partial_run"
+          ],
+          "title": "Measurement Status",
+          "type": "string"
+        },
+        "requests": {
+          "items": {
+            "$ref": "#/$defs/RoleRequestEvidence"
+          },
+          "maxItems": 12,
+          "title": "Requests",
+          "type": "array"
+        },
+        "total_model_calls": {
+          "maximum": 24,
+          "minimum": 0,
+          "title": "Total Model Calls",
+          "type": "integer"
+        },
+        "invalid_model_outputs": {
+          "maximum": 12,
+          "minimum": 0,
+          "title": "Invalid Model Outputs",
+          "type": "integer"
+        },
+        "model_refusals": {
+          "maximum": 12,
+          "minimum": 0,
+          "title": "Model Refusals",
+          "type": "integer"
+        },
+        "model_clarifications": {
+          "maximum": 12,
+          "minimum": 0,
+          "title": "Model Clarifications",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "version",
+        "proposal_identity",
+        "schedule",
+        "model_backend",
+        "scheduler",
+        "public_context_acquisition",
+        "trusted_transport",
+        "attempt_attribution",
+        "measurement_status",
+        "requests",
+        "total_model_calls",
+        "invalid_model_outputs",
+        "model_refusals",
+        "model_clarifications"
+      ],
+      "title": "LiveExecutionEvidence",
+      "type": "object"
+    },
+    "RecoveryEvidence": {
+      "properties": {
+        "event_seqs": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Event Seqs",
+          "type": "array"
+        },
+        "attempt_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Attempt Ids",
+          "type": "array"
+        },
+        "decisive_event_seq": {
+          "title": "Decisive Event Seq",
+          "type": "integer"
+        },
+        "validation_method": {
+          "const": "independent_accepted_artifact_decode",
+          "title": "Validation Method",
+          "type": "string"
+        },
+        "observer_measured": {
+          "title": "Observer Measured",
+          "type": "boolean"
+        },
+        "pre_alert_event_seqs": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Pre Alert Event Seqs",
+          "type": "array"
+        },
+        "post_alert_event_seqs": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Post Alert Event Seqs",
+          "type": "array"
+        },
+        "block_event_seqs": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Block Event Seqs",
+          "type": "array"
+        },
+        "strict_win": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Strict Win"
+        }
+      },
+      "required": [
+        "event_seqs",
+        "attempt_ids",
+        "decisive_event_seq",
+        "validation_method",
+        "observer_measured",
+        "pre_alert_event_seqs",
+        "post_alert_event_seqs",
+        "block_event_seqs",
+        "strict_win"
+      ],
+      "title": "RecoveryEvidence",
+      "type": "object"
+    },
+    "RoleActionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "maximum": 4,
+          "minimum": 1,
+          "title": "Index",
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "tool",
+            "peer",
+            "release",
+            "store_route",
+            "forward_route",
+            "memory_read",
+            "memory_write",
+            "memory_compact",
+            "reader_contribution"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "proposed",
+            "accepted",
+            "rejected",
+            "failed"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "feedback": {
+          "anyOf": [
+            {
+              "enum": [
+                "accepted_by_local_gateway",
+                "candidate_rejected",
+                "execution_failed"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Feedback"
+        }
+      },
+      "required": [
+        "index",
+        "kind",
+        "state",
+        "feedback"
+      ],
+      "title": "RoleActionEvidence",
+      "type": "object"
+    },
+    "RoleRequestEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "enum": [
+            "A0",
+            "A1",
+            "A2",
+            "A3",
+            "A4",
+            "A5",
+            "A6",
+            "A7",
+            "A8",
+            "A9"
+          ],
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "prompt_version": {
+          "enum": [
+            "independent-role-v1",
+            "independent-role-v2",
+            "independent-role-v3",
+            "independent-role-v4",
+            "independent-role-v5",
+            "independent-role-v6",
+            "independent-role-v7",
+            "independent-role-v8",
+            "independent-role-v9",
+            "independent-role-v10"
+          ],
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "compromised": {
+          "title": "Compromised",
+          "type": "boolean"
+        },
+        "outcome": {
+          "enum": [
+            "request_started",
+            "request_failed",
+            "invalid_role_proposal",
+            "act",
+            "refuse",
+            "clarify",
+            "finish"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "input_event_seqs": {
+          "items": {
+            "maximum": 256,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "maxItems": 100,
+          "title": "Input Event Seqs",
+          "type": "array"
+        },
+        "decision_turn": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Decision Turn",
+          "type": "integer"
+        },
+        "tokens_in": {
+          "maximum": 16777216,
+          "minimum": 0,
+          "title": "Tokens In",
+          "type": "integer"
+        },
+        "tokens_out": {
+          "maximum": 16777216,
+          "minimum": 0,
+          "title": "Tokens Out",
+          "type": "integer"
+        },
+        "prior_gateway_feedback": {
+          "items": {
+            "enum": [
+              "accepted_by_local_gateway",
+              "candidate_rejected",
+              "role_rejected",
+              "invalid_tool_arguments",
+              "policy_rejected_outbound"
+            ],
+            "type": "string"
+          },
+          "maxItems": 4,
+          "title": "Prior Gateway Feedback",
+          "type": "array"
+        },
+        "proposal_fingerprint": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Proposal Fingerprint"
+        },
+        "rejection_reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "invalid_role_proposal",
+                "invalid_decision_schema",
+                "direct_tool_calls_unsupported",
+                "tool_not_permitted",
+                "peer_route_not_permitted",
+                "release_not_permitted",
+                "route_transport_not_permitted",
+                "reader_contribution_not_permitted",
+                "memory_not_permitted",
+                "model_request_failed"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Rejection Reason"
+        },
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/RoleActionEvidence"
+          },
+          "maxItems": 4,
+          "title": "Actions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "actor_id",
+        "prompt_version",
+        "compromised",
+        "outcome",
+        "input_event_seqs",
+        "decision_turn",
+        "tokens_in",
+        "tokens_out",
+        "prior_gateway_feedback",
+        "proposal_fingerprint",
+        "rejection_reason",
+        "actions"
+      ],
+      "title": "RoleRequestEvidence",
+      "type": "object"
+    },
+    "ShapeCost": {
+      "additionalProperties": false,
+      "properties": {
+        "eligible_actions": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Eligible Actions"
+        },
+        "observer_inspections": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer Inspections"
+        },
+        "policy_decisions": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy Decisions"
+        },
+        "observer_false_alerts": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer False Alerts"
+        },
+        "policy_false_blocks": {
+          "anyOf": [
+            {
+              "maximum": 40,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy False Blocks"
+        },
+        "eligible_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Eligible Runs"
+        },
+        "observer_eligible_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer Eligible Runs"
+        },
+        "policy_eligible_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy Eligible Runs"
+        },
+        "observer_false_alert_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer False Alert Runs"
+        },
+        "policy_false_block_runs": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy False Block Runs"
+        },
+        "observer_false_alert_rate": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observer False Alert Rate"
+        },
+        "policy_false_block_rate": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Policy False Block Rate"
+        },
+        "observer_measurement": {
+          "enum": [
+            "not_measured",
+            "partial",
+            "measured"
+          ],
+          "title": "Observer Measurement",
+          "type": "string"
+        },
+        "policy_measurement": {
+          "enum": [
+            "not_measured",
+            "partial",
+            "measured"
+          ],
+          "title": "Policy Measurement",
+          "type": "string"
+        },
+        "shape_group": {
+          "enum": [
+            "task_text",
+            "numeric_array",
+            "numeric_scalar",
+            "encrypted_envelope",
+            "aggregate",
+            "formula_choice",
+            "structured_narrative",
+            "task_record"
+          ],
+          "title": "Shape Group",
+          "type": "string"
+        }
+      },
+      "required": [
+        "eligible_actions",
+        "observer_inspections",
+        "policy_decisions",
+        "observer_false_alerts",
+        "policy_false_blocks",
+        "eligible_runs",
+        "observer_eligible_runs",
+        "policy_eligible_runs",
+        "observer_false_alert_runs",
+        "policy_false_block_runs",
+        "observer_false_alert_rate",
+        "policy_false_block_rate",
+        "observer_measurement",
+        "policy_measurement",
+        "shape_group"
+      ],
+      "title": "ShapeCost",
+      "type": "object"
+    }
+  }
+}

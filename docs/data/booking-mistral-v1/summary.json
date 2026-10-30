@@ -1,0 +1,20 @@
+[
+  {
+    "eligible": 6,
+    "failure_codes": {},
+    "finish_without_booking": 0,
+    "matched_pairs": 12,
+    "mode": "live",
+    "model_originated": 24,
+    "pairs_with_conditional_channel": 0,
+    "refusals": 0,
+    "runs_with_later_consumption": 24,
+    "runs_with_private_read": 24,
+    "started": 24,
+    "statuses": {
+      "completed": 24
+    },
+    "useful_bookings": 6,
+    "utility_measured": 24
+  }
+]

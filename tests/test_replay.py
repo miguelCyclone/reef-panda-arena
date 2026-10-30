@@ -30,7 +30,7 @@ def test_c00_scenario_is_strict() -> None:
         ScenarioLoader().load("../C00")
     assert ScenarioLoader().load("C03").attack_contract.decoder_id == "polynomial_coefficients_v1"
     with pytest.raises(ValueError):
-        ScenarioLoader().load("C10")
+        ScenarioLoader().load("C44")
 
 
 def test_c00_replay_persists_only_accepted_sink_receipts() -> None:

@@ -46,6 +46,7 @@ def test_taint_blocks_secret_derived_prose_and_preserves_eta() -> None:
                 gateway = PolicyGateway(
                     SessionEventStore(session), MockToolRegistry(fixture, synthetic_secret),
                     "taint", synthetic_secret, 8, 100, 4096,
+                    run_id=run_id, runtime_roles={"customer_worker": "customer_worker"},
                 )
                 context = TrustedContext(run_id, "customer_worker", "customer_worker")
                 unknown = await gateway.invoke(

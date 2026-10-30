@@ -1,0 +1,10 @@
+{
+  "all_rows_terminal": true,
+  "matrix_sha256": "98e24c6b66134cff0d541d58de0381680e521dd96055a33bb0613b54d705b553",
+  "public_report_fields_equal": true,
+  "source_tree_sha256": "977ab509d8b14dd13dedd63fe1d18c835ff1c6de86afb2f1c96b6b706c40ac25",
+  "trials_sha256": "b2cff6beeab13a073598ce5f486bb0958f058fb8a3d2ba51c698d69fa5bb7901",
+  "verified_at": "2026-10-30T13:10:39.173109+00:00",
+  "verified_rows": 1584,
+  "version": "post-audit-readback-v1"
+}

@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reef-panda.example.invalid/contracts/unified-scenario-v1",
+  "title": "Unified C29-C43 scenario manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "revision",
+    "name",
+    "track",
+    "difficulty",
+    "mode",
+    "agent_population",
+    "compromised_roles",
+    "boundary",
+    "path_description",
+    "research_question",
+    "benign_requirement",
+    "nonredundancy_note",
+    "source_fixture",
+    "accepted_sink",
+    "defender_profiles",
+    "controls",
+    "limits",
+    "invariants"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^C(29|3[0-9]|4[0-3])$"
+    },
+    "revision": {
+      "const": "unified-v1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 5
+    },
+    "track": {
+      "enum": [
+        "trust_delegation",
+        "hidden_lineage"
+      ]
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "mode": {
+      "enum": [
+        "replay_first"
+      ]
+    },
+    "agent_population": {
+      "const": 10
+    },
+    "compromised_roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^A[0-9]$"
+      },
+      "minItems": 1,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "boundary": {
+      "type": "string",
+      "minLength": 3
+    },
+    "path_description": {
+      "type": "string"
+    },
+    "research_question": {
+      "type": "string",
+      "minLength": 15
+    },
+    "benign_requirement": {
+      "type": "string"
+    },
+    "nonredundancy_note": {
+      "type": "string"
+    },
+    "source_fixture": {
+      "const": "synthetic_private_account_route_v1"
+    },
+    "accepted_sink": {
+      "const": "local_mock_customer_outbound"
+    },
+    "defender_profiles": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "allowlist_only",
+          "content_only",
+          "actor_local",
+          "transitive",
+          "scoped_release",
+          "strict_no_release"
+        ]
+      },
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 4,
+      "uniqueItems": true
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agents",
+        "compromised",
+        "turns",
+        "llm_calls",
+        "tool_message_actions",
+        "graph_steps",
+        "seconds",
+        "max_payload_bytes"
+      ],
+      "properties": {
+        "agents": {
+          "const": 10
+        },
+        "compromised": {
+          "const": 2
+        },
+        "turns": {
+          "const": 12
+        },
+        "llm_calls": {
+          "const": 24
+        },
+        "tool_message_actions": {
+          "const": 40
+        },
+        "graph_steps": {
+          "const": 48
+        },
+        "seconds": {
+          "const": 900
+        },
+        "max_payload_bytes": {
+          "const": 4096
+        }
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 5,
+      "uniqueItems": true
+    }
+  }
+}

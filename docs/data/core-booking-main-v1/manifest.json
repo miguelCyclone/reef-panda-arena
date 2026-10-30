@@ -1,0 +1,14 @@
+{
+  "files": {
+    "executed-source.tar.gz": "2b9006aecbfc4d5147e23540255b0d0e3776f7f29770c494825f0722b55d02dd",
+    "groups.json": "236d7717b7b1f45c5435ec9b2068f8e2d5a3a82d2d5f552cc405d4035f67a3ac",
+    "matrix.md": "da30a0795514376e4716dc360f19931012d0afa01697988f17629f2b6e0b022a",
+    "pairs.json": "66e0ec1f3f0bbbe1b81dbe3412f500ebc857d06305a9fc84cb68f7bffc7f5392",
+    "plan.json": "8a18cf66318024dfe5d51c016d03bfc199ad2495fb57cf02bb6f825c6b1ae6e3",
+    "summary.json": "dbc81de249e1596cdf5c61141431cf465aceb6292f5acd0c17e0b0f88b941ea8",
+    "trials.jsonl.gz": "24ba96b739b73deb9a4ec381ff80848b4422826eca519ed77bd819826ffc91e6",
+    "verification.json": "e280cb7c14f0ac6fd2381deb27a658b560d99cdbe97f09bce887c6a54b775bdf"
+  },
+  "study_id": "0010fb81-4dd9-469a-b6c2-452a4c5500e0",
+  "version": "booking-publication-v1"
+}

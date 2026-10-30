@@ -56,8 +56,17 @@ def test_api_replay_status_history_and_report() -> None:
             assert (await client.get("/assets/app.js")).status_code == 200
             assert (await client.get("/assets/styles.css")).status_code == 200
             scenarios = (await client.get("/v1/scenarios")).json()
-            assert len(scenarios) == 10
+            assert len(scenarios) == 44
             assert scenarios[1]["available_modes"] == ["replay"]
+            assert scenarios[-1]["id"] == "C43"
+            assert scenarios[-1]["available_modes"] == ["replay", "live_multiagent"]
+            assert len(scenarios[-1]["visualization"]["agents"]) == 10
+            assert (await client.get("/assets/flow-player.js")).status_code == 200
+            invalid_sensitive_seed = await client.post("/v1/runs", json={
+                "scenario_id": "C10", "mode": "replay",
+                "defense_profile": "declassify_strict", "seed": 999,
+            })
+            assert invalid_sensitive_seed.status_code == 422
             created = await client.post("/v1/runs", json={
                 "scenario_id": "C00", "mode": "replay", "defense_profile": "content",
                 "seed": 101, "attack_enabled": True,
@@ -73,6 +82,7 @@ def test_api_replay_status_history_and_report() -> None:
             status = (await client.get(f"/v1/runs/{run_id}")).json()
             assert status["status"] == "completed"
             assert status["secret_escaped"] is False
+            assert status["attack_enabled"] is True
             assert status["benign_task_success"] is True
             history = (await client.get(f"/v1/runs/{run_id}/events")).json()["events"]
             assert history[0]["event"] == "run.started"

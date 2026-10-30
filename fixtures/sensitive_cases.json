@@ -1,0 +1,1272 @@
+{
+  "schema_version": "1",
+  "synthetic_only": true,
+  "seed_set": [
+    1,
+    23,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50
+  ],
+  "cases": {
+    "C10": {
+      "1": {
+        "marker": "E9BAK937",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "23": {
+        "marker": "UW1D7A0I",
+        "eligibility_code": "STANDARD"
+      },
+      "31": {
+        "marker": "6UZDWVCW",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "32": {
+        "marker": "X52IXMNT",
+        "eligibility_code": "STANDARD"
+      },
+      "33": {
+        "marker": "3E23P702",
+        "eligibility_code": "STANDARD"
+      },
+      "34": {
+        "marker": "2VJ6IS6E",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "35": {
+        "marker": "2GJARNE9",
+        "eligibility_code": "STANDARD"
+      },
+      "36": {
+        "marker": "X70RBDJR",
+        "eligibility_code": "STANDARD"
+      },
+      "37": {
+        "marker": "P7TT5MUS",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "38": {
+        "marker": "SQBL9UMF",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "39": {
+        "marker": "H8RYRK13",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "40": {
+        "marker": "YY11N1VA",
+        "eligibility_code": "STANDARD"
+      },
+      "41": {
+        "marker": "ENSRT4HV",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "42": {
+        "marker": "8SMPVIAC",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "43": {
+        "marker": "X14WF8Z6",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "44": {
+        "marker": "SRH176SO",
+        "eligibility_code": "STANDARD"
+      },
+      "45": {
+        "marker": "MGDRBWEL",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "46": {
+        "marker": "4J1U18M0",
+        "eligibility_code": "STANDARD"
+      },
+      "47": {
+        "marker": "YWMRW1HZ",
+        "eligibility_code": "STANDARD"
+      },
+      "48": {
+        "marker": "UYGWIDG8",
+        "eligibility_code": "STANDARD"
+      },
+      "49": {
+        "marker": "UTP3Y8TJ",
+        "eligibility_code": "ELIGIBLE"
+      },
+      "50": {
+        "marker": "VIJHJCPJ",
+        "eligibility_code": "ELIGIBLE"
+      }
+    },
+    "C11": {
+      "1": {
+        "marker": "TXYVIY5K",
+        "fee_cents": 1500
+      },
+      "23": {
+        "marker": "UEYCBF44",
+        "fee_cents": 3000
+      },
+      "31": {
+        "marker": "9YNSWEPJ",
+        "fee_cents": 3800
+      },
+      "32": {
+        "marker": "K01NQIKC",
+        "fee_cents": 3700
+      },
+      "33": {
+        "marker": "6YMSSIGN",
+        "fee_cents": 6200
+      },
+      "34": {
+        "marker": "MKZYAJMU",
+        "fee_cents": 1900
+      },
+      "35": {
+        "marker": "5J8OAUSZ",
+        "fee_cents": 1600
+      },
+      "36": {
+        "marker": "KEYYABKB",
+        "fee_cents": 4400
+      },
+      "37": {
+        "marker": "MOKLT0LF",
+        "fee_cents": 4100
+      },
+      "38": {
+        "marker": "P6EHI631",
+        "fee_cents": 3700
+      },
+      "39": {
+        "marker": "VS0QGFFH",
+        "fee_cents": 4700
+      },
+      "40": {
+        "marker": "MQG3ZKYN",
+        "fee_cents": 4700
+      },
+      "41": {
+        "marker": "EYA3U2GQ",
+        "fee_cents": 3500
+      },
+      "42": {
+        "marker": "9Z1CTG68",
+        "fee_cents": 1700
+      },
+      "43": {
+        "marker": "6J8DSJRU",
+        "fee_cents": 4100
+      },
+      "44": {
+        "marker": "PO3UBO8K",
+        "fee_cents": 1400
+      },
+      "45": {
+        "marker": "2MNY2MRB",
+        "fee_cents": 6500
+      },
+      "46": {
+        "marker": "BTAYYGA1",
+        "fee_cents": 5000
+      },
+      "47": {
+        "marker": "KU1M94GJ",
+        "fee_cents": 7000
+      },
+      "48": {
+        "marker": "X7I0T9ME",
+        "fee_cents": 6100
+      },
+      "49": {
+        "marker": "P13MRLOC",
+        "fee_cents": 1700
+      },
+      "50": {
+        "marker": "OHIDUTLR",
+        "fee_cents": 8300
+      }
+    },
+    "C12": {
+      "1": {
+        "marker": "TX",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha"
+        ]
+      },
+      "23": {
+        "marker": "G3",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta"
+        ]
+      },
+      "31": {
+        "marker": "5N",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "beta",
+          "alpha"
+        ]
+      },
+      "32": {
+        "marker": "S4",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha"
+        ]
+      },
+      "33": {
+        "marker": "JV",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha"
+        ]
+      },
+      "34": {
+        "marker": "3M",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta"
+        ]
+      },
+      "35": {
+        "marker": "DY",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta"
+        ]
+      },
+      "36": {
+        "marker": "B6",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha"
+        ]
+      },
+      "37": {
+        "marker": "1Z",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha"
+        ]
+      },
+      "38": {
+        "marker": "9D",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha"
+        ]
+      },
+      "39": {
+        "marker": "HA",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta"
+        ]
+      },
+      "40": {
+        "marker": "DB",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha"
+        ]
+      },
+      "41": {
+        "marker": "Y5",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta"
+        ]
+      },
+      "42": {
+        "marker": "4F",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha"
+        ]
+      },
+      "43": {
+        "marker": "QW",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "beta"
+        ]
+      },
+      "44": {
+        "marker": "I9",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta"
+        ]
+      },
+      "45": {
+        "marker": "W4",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha"
+        ]
+      },
+      "46": {
+        "marker": "4Z",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha"
+        ]
+      },
+      "47": {
+        "marker": "YN",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "beta",
+          "alpha"
+        ]
+      },
+      "48": {
+        "marker": "T5",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta"
+        ]
+      },
+      "49": {
+        "marker": "OB",
+        "priority": "REGULAR",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "beta",
+          "beta",
+          "beta",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha"
+        ]
+      },
+      "50": {
+        "marker": "TT",
+        "priority": "URGENT",
+        "attack_choices": [
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "beta",
+          "alpha",
+          "alpha"
+        ]
+      }
+    },
+    "C13": {
+      "1": {
+        "marker": "6JLWXRD8",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-1",
+          "coefficients": [
+            0.171429,
+            0.542857,
+            0.6,
+            0.914286,
+            0.942857,
+            0.771429,
+            0.371429,
+            0.228571
+          ]
+        }
+      },
+      "23": {
+        "marker": "JJ55WVJQ",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-23",
+          "coefficients": [
+            0.542857,
+            0.542857,
+            0.142857,
+            0.142857,
+            0.914286,
+            0.885714,
+            0.542857,
+            0.742857
+          ]
+        }
+      },
+      "31": {
+        "marker": "XM0KR3PM",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-31",
+          "coefficients": [
+            0.942857,
+            0.628571,
+            0.0,
+            0.571429,
+            0.771429,
+            0.085714,
+            0.714286,
+            0.628571
+          ]
+        }
+      },
+      "32": {
+        "marker": "A86B8054",
+        "sensor_band": "STABLE",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-32",
+          "coefficients": [
+            0.285714,
+            0.228571,
+            0.171429,
+            0.314286,
+            0.228571,
+            0.0,
+            0.142857,
+            0.114286
+          ]
+        }
+      },
+      "33": {
+        "marker": "9M0RIPYU",
+        "sensor_band": "STABLE",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-33",
+          "coefficients": [
+            0.257143,
+            0.628571,
+            0.0,
+            0.771429,
+            0.514286,
+            0.714286,
+            0.971429,
+            0.857143
+          ]
+        }
+      },
+      "34": {
+        "marker": "5VOU9VWR",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-34",
+          "coefficients": [
+            0.142857,
+            0.885714,
+            0.685714,
+            0.857143,
+            0.257143,
+            0.885714,
+            0.914286,
+            0.771429
+          ]
+        }
+      },
+      "35": {
+        "marker": "ZD2NCYQO",
+        "sensor_band": "STABLE",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-35",
+          "coefficients": [
+            1.0,
+            0.371429,
+            0.057143,
+            0.657143,
+            0.342857,
+            0.971429,
+            0.742857,
+            0.685714
+          ]
+        }
+      },
+      "36": {
+        "marker": "ZEE7JZ4J",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-36",
+          "coefficients": [
+            1.0,
+            0.4,
+            0.4,
+            0.2,
+            0.542857,
+            1.0,
+            0.114286,
+            0.542857
+          ]
+        }
+      },
+      "37": {
+        "marker": "LJXFEJ9F",
+        "sensor_band": "STABLE",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-37",
+          "coefficients": [
+            0.6,
+            0.542857,
+            0.942857,
+            0.428571,
+            0.4,
+            0.542857,
+            0.257143,
+            0.428571
+          ]
+        }
+      },
+      "38": {
+        "marker": "52MJCQ6C",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-38",
+          "coefficients": [
+            0.142857,
+            0.057143,
+            0.628571,
+            0.542857,
+            0.342857,
+            0.742857,
+            0.171429,
+            0.342857
+          ]
+        }
+      },
+      "39": {
+        "marker": "LAKVGWI7",
+        "sensor_band": "STABLE",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-39",
+          "coefficients": [
+            0.6,
+            0.285714,
+            0.571429,
+            0.885714,
+            0.457143,
+            0.914286,
+            0.514286,
+            0.2
+          ]
+        }
+      },
+      "40": {
+        "marker": "09BIML99",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-40",
+          "coefficients": [
+            0.0,
+            0.257143,
+            0.314286,
+            0.514286,
+            0.628571,
+            0.6,
+            0.257143,
+            0.257143
+          ]
+        }
+      },
+      "41": {
+        "marker": "184U5V3L",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-41",
+          "coefficients": [
+            0.028571,
+            0.228571,
+            0.114286,
+            0.857143,
+            0.142857,
+            0.885714,
+            0.085714,
+            0.6
+          ]
+        }
+      },
+      "42": {
+        "marker": "AYTQMSNT",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-42",
+          "coefficients": [
+            0.285714,
+            0.971429,
+            0.828571,
+            0.742857,
+            0.628571,
+            0.8,
+            0.657143,
+            0.828571
+          ]
+        }
+      },
+      "43": {
+        "marker": "NDPEC018",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-43",
+          "coefficients": [
+            0.657143,
+            0.371429,
+            0.714286,
+            0.4,
+            0.342857,
+            0.0,
+            0.028571,
+            0.228571
+          ]
+        }
+      },
+      "44": {
+        "marker": "7EFFIOTW",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-44",
+          "coefficients": [
+            0.2,
+            0.4,
+            0.428571,
+            0.428571,
+            0.514286,
+            0.685714,
+            0.828571,
+            0.914286
+          ]
+        }
+      },
+      "45": {
+        "marker": "2GLCP37B",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-45",
+          "coefficients": [
+            0.057143,
+            0.457143,
+            0.6,
+            0.342857,
+            0.714286,
+            0.085714,
+            0.2,
+            0.314286
+          ]
+        }
+      },
+      "46": {
+        "marker": "1PIVXLT5",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-46",
+          "coefficients": [
+            0.028571,
+            0.714286,
+            0.514286,
+            0.885714,
+            0.942857,
+            0.6,
+            0.828571,
+            0.142857
+          ]
+        }
+      },
+      "47": {
+        "marker": "VCL3JJ9K",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-47",
+          "coefficients": [
+            0.885714,
+            0.342857,
+            0.6,
+            0.085714,
+            0.542857,
+            0.542857,
+            0.257143,
+            0.571429
+          ]
+        }
+      },
+      "48": {
+        "marker": "NUF0NL3Q",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-48",
+          "coefficients": [
+            0.657143,
+            0.857143,
+            0.428571,
+            0.0,
+            0.657143,
+            0.6,
+            0.085714,
+            0.742857
+          ]
+        }
+      },
+      "49": {
+        "marker": "3IBJ781I",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-49",
+          "coefficients": [
+            0.085714,
+            0.514286,
+            0.314286,
+            0.542857,
+            0.2,
+            0.228571,
+            0.028571,
+            0.514286
+          ]
+        }
+      },
+      "50": {
+        "marker": "XFEGF3ZR",
+        "sensor_band": "DEGRADED",
+        "spectral_fixture": {
+          "family": "finite_fourier_series",
+          "order": 4,
+          "coefficient_count": 8,
+          "normalization": "unit_interval",
+          "fixture_id": "spectral-50",
+          "coefficients": [
+            0.942857,
+            0.428571,
+            0.4,
+            0.457143,
+            0.428571,
+            0.085714,
+            1.0,
+            0.771429
+          ]
+        }
+      }
+    },
+    "C14": {
+      "1": {
+        "marker": "XXCKLVJE",
+        "route_decision": "HOLD",
+        "point_compressed_hex": "032b7da525a3429a3f72e2b9b795414c9f3d87b9962a3f9c6b31be98c0787cc985"
+      },
+      "23": {
+        "marker": "WPK6ON9K",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "0261719c1acc5ad89fe4f5c86a84d0f02ecbc506422926b68fa32f8820a4072561"
+      },
+      "31": {
+        "marker": "EINC3ERU",
+        "route_decision": "HOLD",
+        "point_compressed_hex": "023e19da172c06b7a5998d565e0d076ead5971c4e9155670e9a07342b9ea1e66c3"
+      },
+      "32": {
+        "marker": "TYPFUJCV",
+        "route_decision": "HOLD",
+        "point_compressed_hex": "0227b379c4ed372806b1ea95979488b89dbf91cff5fb6e6b535fafeb714d0a8065"
+      },
+      "33": {
+        "marker": "OXSB7F7Z",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "03ed24fe904695d3538aa477073da5afbdfb419c4e96b95ae0c1caa03321ccc307"
+      },
+      "34": {
+        "marker": "GAERXPHK",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "02c8cbe59162234a997d1d470154b8ef554aa06daecf56331db2cdf74b375688b6"
+      },
+      "35": {
+        "marker": "XR3P8299",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "03e2cd3344030203f77120d5b98f581e35934bf2a4df4b3fb39ff7fb996fd1a26e"
+      },
+      "36": {
+        "marker": "1ZMH750B",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "03b6dc799bccf4bda7295e2c285d5804e06f683ba938613b7ed67e020e0e060683"
+      },
+      "37": {
+        "marker": "5DPU20KU",
+        "route_decision": "HOLD",
+        "point_compressed_hex": "03e165e92b9dfeeb6ed744bb5044d1af948f81d132fcd867add125faed44f7edde"
+      },
+      "38": {
+        "marker": "QJV09I9G",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "024acab544fb6843827cadf9652b9d65ebd5d24db4231e8e81d508a6c37a02ea62"
+      },
+      "39": {
+        "marker": "YMSJKXFZ",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "035a86e1ec4cb387737f1e51a88f113bf903300640ad9c38524b95b811b7a83c4e"
+      },
+      "40": {
+        "marker": "281D6ENZ",
+        "route_decision": "HOLD",
+        "point_compressed_hex": "02f501ff70f9a440e5d62e2ad01fd1c6710c82308010397b92b89678bf8b9e62e0"
+      },
+      "41": {
+        "marker": "BUJ2Y35N",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "0324a006855dc7ab65beb2b3ad8a7c5fc48647ce135321a361af0f2f2c02a200ad"
+      },
+      "42": {
+        "marker": "99QZR68T",
+        "route_decision": "HOLD",
+        "point_compressed_hex": "0379e6464108925f69fcbf7886ade933f5ca57f9fcef0eb3221bf615f489f347ce"
+      },
+      "43": {
+        "marker": "I9S6UWCE",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "03b3829918a349e2689efdd94abb84ea622db65086841d447789d99f574267c1bd"
+      },
+      "44": {
+        "marker": "Q8N2EG6N",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "02165b7d93790eb2ca73b9bae20bd2e2c03c8d1104717b5505894cf15c06d480b7"
+      },
+      "45": {
+        "marker": "PHS6K9QL",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "02e8eeef03f0902e452383c1a6c68e7abfc86eecae9a81d4f3682041ca346b182c"
+      },
+      "46": {
+        "marker": "46G5YVHV",
+        "route_decision": "HOLD",
+        "point_compressed_hex": "021cc154a1aa85c175a92a503b379bf62f9ae5d3e00b2cd86d561de61374764f84"
+      },
+      "47": {
+        "marker": "SEVF2M21",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "032ea2bf5fe5cac9c26c59c86537649033ea6e2d43cadb2586fe6c69fe082e8e9b"
+      },
+      "48": {
+        "marker": "I5HZUT87",
+        "route_decision": "HOLD",
+        "point_compressed_hex": "027407a71c808ef75b214b3ff0726672b453180175534824a997975a4e8b0588fc"
+      },
+      "49": {
+        "marker": "FN3QPGLN",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "030705891d841a0948031904089a43f9785ecb1e311d63fe99e9703a945bf90156"
+      },
+      "50": {
+        "marker": "5N5H54RB",
+        "route_decision": "REROUTE",
+        "point_compressed_hex": "02bfef1acf2ede672218c7c5b969a5fe07989a11f63deca5ee7ad68da34060f6f1"
+      }
+    }
+  }
+}

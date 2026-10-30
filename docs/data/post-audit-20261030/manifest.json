@@ -1,0 +1,20 @@
+{
+  "executed_source_tree_sha256": "977ab509d8b14dd13dedd63fe1d18c835ff1c6de86afb2f1c96b6b706c40ac25",
+  "files": {
+    "benign-cost.json.gz": "f3cd00e1607a4a3a800ebb5e5b55e1487ace9ebdc2f06416d19a130f89c87e0d",
+    "costs.md": "4f76ecb68043ecaea6e2a6073dc837b2cc3f4416202f5724a91cce8167be3eed",
+    "executed-source.tar.gz": "f3907126f80e1bbd15facc832bd0cce481cb4ba7d2c8ce0973ae6b01b99a0849",
+    "groups.json": "b12fc488ee8828667f474f109d8646d3fb775f3571876952d43ac90b849ef3d0",
+    "matrix.csv.gz": "ff181e792de33e316a57a0a2f92d93005cc3423dfefdeffc4428d60fc03ae47b",
+    "plan.json": "58fe61a6c07b9830e0d59278583afacdf771df5b65bbcf705e2f98f74f463758",
+    "trials.jsonl.gz": "0667e9e4539c5b843eb6509d85b34acd174f571bfcfc211352bfb5a84f41033e",
+    "verification.json": "41a7dfbd76e4b4866c7c7e4ed2ce07e12c1ce7ad87be4018bd00f77885bbd329"
+  },
+  "publisher_sha256": "4831bb8935cb13d9a9fe7b111055e9060bbd5c88834bc80675c3087c952ae4fb",
+  "scope": "Sanitized reports and source archive; no local key, .env, raw prompt or accepted payload capture",
+  "statuses": {
+    "completed": 1584
+  },
+  "study_id": "147fc71b-4e8f-4d83-ba8c-44a4c654b641",
+  "version": "post-audit-publication-v1"
+}

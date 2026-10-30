@@ -21,10 +21,16 @@ def mount_web(app: FastAPI) -> None:
     @app.get("/", include_in_schema=False)
     async def home() -> FileResponse:
         return FileResponse(
-            f"{web_dir}/index.html",
+            f"{web_dir}/booking.html",
             headers={
                 "Cache-Control": "no-store",
                 "Content-Security-Policy": CONTENT_SECURITY_POLICY,
                 "X-Content-Type-Options": "nosniff",
             },
         )
+
+    @app.get("/library", include_in_schema=False)
+    async def library() -> FileResponse:
+        return FileResponse(f"{web_dir}/index.html", headers={
+            "Cache-Control": "no-store", "Content-Security-Policy": CONTENT_SECURITY_POLICY,
+            "X-Content-Type-Options": "nosniff"})

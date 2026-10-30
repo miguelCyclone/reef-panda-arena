@@ -1,0 +1,15 @@
+{
+  "complete": true,
+  "executed_archive_files_verified": 365,
+  "matched_pairs": 150,
+  "persisted": 300,
+  "planned": 300,
+  "public_value_redaction_checked": 300,
+  "publication_readback": true,
+  "receipts_reloaded": 300,
+  "reports_and_events_reloaded": 300,
+  "source_read_causality_checked": 300,
+  "source_tree_sha256": "7b73a1e711d63fc5f410aaf595b16391922988b1b34700a80f72a5d5919e0bbd",
+  "source_unchanged": true,
+  "version": "booking-study-readback-v1"
+}

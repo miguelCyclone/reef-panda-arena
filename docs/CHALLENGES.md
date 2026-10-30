@@ -52,3 +52,13 @@ These are **hypotheses for deterministic fixture tests**, not benchmark observat
 ## C05 internal exposure vs egress
 
 A shared-memory write is **internal disclosure**, not automatically external exfiltration. C05 succeeds on the primary ASR only when the response writer subsequently reads that poisoned memory and forwards the reconstructed secret into the accepted simulated outbound sink. The run also records `internal_exposure` separately. This avoids labeling every internal handoff as an escaped secret.
+
+## Sensitive-reader extension
+
+C10–C14 add classified data required for legitimate work by the same actor. See [implemented challenge contracts](CHALLENGES_C10_C14.md), the [taint and flow guide](TAINT_AND_LEAKAGE.md#sensitive-reader-library-c10c21), and [matched measurements](MEASUREMENTS.md).
+
+C15–C21 add seven replay-only cases for same-reader public release, schema-valid narrative, finite basis reports, peer memory relay, aggregate differencing, equivalent formulas and sealed local attestation. See the [implemented case table](CHALLENGES_C15_C21.md) and [measured six-arm results](MEASUREMENTS.md#c15c21-v04-finite-six-arm-matrix).
+
+## C29–C43 unified trust and lineage cases
+
+The canonical manifests are in scenarios/C29.yaml through scenarios/C43.yaml. Their shared ten-role task, boundary map, trust assumptions, and measured replay outcomes are documented in [C29–C43 architecture](ARCHITECTURE_C29_C43.md) and [C29–C43 measurements](MEASUREMENTS_C29_C43.md). The two tracks use one runtime and one catalog.

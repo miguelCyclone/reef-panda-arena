@@ -42,6 +42,7 @@ class LiveNodes:
                 TrustedContext(
                     run_id=self.run_id, actor_id=role, role=role,
                     operation_id=f"{operation_id}-{index}",
+                    attempt_id="attack:1" if operation_id == "attack" else None,
                 ),
                 call,
             )

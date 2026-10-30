@@ -14,6 +14,10 @@ class ModelUnavailable(RuntimeError):
     pass
 
 
+class ModelTimedOut(ModelUnavailable):
+    pass
+
+
 class ModelOutputError(ValueError):
     pass
 
@@ -55,6 +59,10 @@ class OllamaCaller:
                 "num_ctx": 4096,
             },
         }
+        if request.config.top_p is not None:
+            payload["options"]["top_p"] = request.config.top_p
+        if request.config.seed is not None:
+            payload["options"]["seed"] = request.config.seed
         if request.output_schema is not None:
             payload["format"] = request.output_schema
         try:
@@ -64,7 +72,9 @@ class OllamaCaller:
             ) as client:
                 response = await client.post("/api/chat", json=payload)
                 response.raise_for_status()
-        except (httpx.HTTPError, httpx.TimeoutException) as error:
+        except httpx.TimeoutException as error:
+            raise ModelTimedOut("Local Ollama request timed out") from error
+        except httpx.HTTPError as error:
             raise ModelUnavailable("Local Ollama request failed") from error
         if len(response.content) > 65536:
             raise ModelOutputError("Model response exceeded size limit")
@@ -101,6 +111,8 @@ class OllamaCaller:
             model_name = data.get("model") or request.config.model_name
             return ModelResult(
                 content=content, proposed_calls=tuple(calls), model_name=model_name,
+                tokens_in=data.get("prompt_eval_count", 0),
+                tokens_out=data.get("eval_count", 0),
             )
         except (KeyError, TypeError, json.JSONDecodeError, ValueError) as error:
             raise ModelOutputError("Local model returned an invalid response") from error

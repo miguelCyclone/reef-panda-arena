@@ -4,6 +4,7 @@ import base64
 import os
 from pathlib import Path
 import secrets
+import shutil
 import subprocess
 import sys
 import venv
@@ -20,6 +21,9 @@ def run(*command: str) -> None:
 def main() -> None:
     if sys.version_info < (3, 11):
         raise SystemExit("Python 3.11 or newer is required")
+    if shutil.which("docker") is None:
+        raise SystemExit("Docker with the Compose plugin is required")
+    run("docker", "compose", "version")
     env_path = ROOT / ".env"
     if not env_path.exists():
         app_password = secrets.token_urlsafe(32)
@@ -53,10 +57,13 @@ def main() -> None:
         print("Using existing .env")
     (ROOT / ".mysql-socket").mkdir(exist_ok=True)
     venv_dir = ROOT / ".venv"
-    if not venv_dir.exists():
+    python_path = venv_dir / "bin" / "python"
+    if not python_path.is_file():
         venv.EnvBuilder(with_pip=True).create(venv_dir)
-    python = str(venv_dir / "bin" / "python")
-    run(python, "-m", "pip", "install", "-e", ".[test,api,live]")
+    python = str(python_path)
+    run(python, "-m", "pip", "install", "pip>=26.2,<27")
+    run(python, "-m", "pip", "install", "setuptools>=84.1,<85", "wheel>=0.44,<1")
+    run(python, "-m", "pip", "install", "--no-build-isolation", "-e", ".[test,api,live]")
     run("docker", "compose", "up", "-d", "--wait", "mysql")
     run(str(venv_dir / "bin" / "reef-panda-arena"), "doctor")
     print("Ready: .venv/bin/reef-panda-arena scenarios list")

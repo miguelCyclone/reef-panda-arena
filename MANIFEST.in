@@ -1,0 +1,9 @@
+include scenarios/catalog.csv
+recursive-include scenarios *.yaml
+include fixtures/shipping_task.json
+include fixtures/sensitive_cases.json
+include fixtures/extension_cases.json
+include fixtures/adaptive_cases.json
+include migration/schema.sql
+recursive-include docs *.md *.png *.jpg
+recursive-include contracts *.json

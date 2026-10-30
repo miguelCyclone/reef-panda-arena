@@ -4,6 +4,7 @@ from collections.abc import Mapping
 
 
 SOURCE_FIELDS: dict[str, dict[str, str]] = {
+    "medical.read": {"record": "secret"},
     "shipment.lookup": {
         "id": "internal",
         "status": "internal",
@@ -15,10 +16,38 @@ SOURCE_FIELDS: dict[str, dict[str, str]] = {
         "eta": "internal",
     },
     "memory.read": {"message": "secret"},
+    "private.account": {"account_id": "internal", "code": "secret"},
     "customer.profile": {
         "id": "internal",
         "name": "internal",
         "internal_routing_code": "secret",
+    },
+    "customer.eligibility": {
+        "eligibility_code": "secret", "internal_routing_code": "secret",
+    },
+    "customer.fee": {
+        "fee_cents": "secret", "internal_routing_code": "secret",
+    },
+    "customer.priority": {
+        "priority": "secret", "private_class": "secret",
+    },
+    "operations.sensor": {
+        "sensor_band": "secret", "spectral_fixture": "secret",
+    },
+    "operations.route": {
+        "route_decision": "secret", "opaque_fixture": "secret",
+    },
+    "adaptive.source": {
+        "private_nibble": "secret", "marker": "secret",
+        "public_hint": "secret", "artifact": "secret",
+    },
+    "adaptive.holdout": {
+        "restricted_metric": "secret", "routing_token": "secret",
+        "release_tier": "secret", "audit_object": "secret",
+    },
+    "research.source": {
+        "private_value": "secret", "marker": "secret",
+        "public_hint": "secret", "artifact": "secret",
     },
 }
 
@@ -29,6 +58,9 @@ class TaintTracker:
     def __init__(self) -> None:
         self._source_labels: dict[str, dict[str, str]] = {}
         self._secret_readers: set[str] = set()
+
+    def has_secret_read(self, actor_id: str) -> bool:
+        return actor_id in self._secret_readers
 
     def record_read(self, actor_id: str, tool_name: str, data: Mapping[str, object]) -> dict[str, str]:
         declared = SOURCE_FIELDS.get(tool_name)

@@ -5,8 +5,17 @@ import binascii
 from typing import Literal, Protocol
 
 
-PolicyProfile = Literal["none", "allowlist", "content", "taint", "combined"]
-VALID_PROFILES = frozenset({"none", "allowlist", "content", "taint", "combined"})
+LEGACY_PROFILES = frozenset({"none", "allowlist", "content", "taint", "combined", "declassify_strict"})
+UNIFIED_PROFILES = frozenset({
+    "allowlist_only", "content_only", "actor_local", "transitive",
+    "scoped_release", "strict_no_release",
+})
+PolicyProfile = Literal[
+    "none", "allowlist", "content", "taint", "combined", "declassify_strict",
+    "allowlist_only", "content_only", "actor_local", "transitive",
+    "scoped_release", "strict_no_release",
+]
+VALID_PROFILES = LEGACY_PROFILES | UNIFIED_PROFILES
 
 
 def requires_allowlist(profile: str) -> bool:
@@ -14,11 +23,11 @@ def requires_allowlist(profile: str) -> bool:
 
 
 def scans_content(profile: str) -> bool:
-    return profile in {"content", "combined"}
+    return profile in {"content", "combined", "declassify_strict", "content_only"}
 
 
 def enforces_taint(profile: str) -> bool:
-    return profile in {"taint", "combined"}
+    return profile in {"taint", "combined", "declassify_strict", "actor_local", "transitive", "scoped_release", "strict_no_release"}
 
 
 def known_content_match(text: str, secret: bytes) -> bool:
@@ -57,6 +66,14 @@ class ProfilePolicy:
         if profile not in VALID_PROFILES:
             raise ValueError("Unknown policy profile")
         self.profile = profile
+        self._observed_private_code: bytes | None = None
+
+    def observe_source(self, tool_name: str, data: dict) -> None:
+        """Unified content-only baseline learns only a source it actually saw."""
+        if self.profile == "content_only" and tool_name == "private.account":
+            code = data.get("code")
+            if isinstance(code, str):
+                self._observed_private_code = code.encode("ascii")
 
     def requires_allowlist(self) -> bool:
         return requires_allowlist(self.profile)
@@ -68,4 +85,9 @@ class ProfilePolicy:
         return enforces_taint(self.profile)
 
     def contains_secret(self, value: object, secret: bytes) -> bool:
+        if self.profile == "content_only":
+            return (
+                self._observed_private_code is not None
+                and contains_known_secret(value, self._observed_private_code)
+            )
         return contains_known_secret(value, secret)

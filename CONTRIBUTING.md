@@ -9,3 +9,14 @@ All data must be synthetic. Do not add external exfiltration URLs, real API keys
 Run `ARENA_TEST_MYSQL=1 .venv/bin/python -m pytest -q` and `node --test tests/test_web.mjs` after browser or boundary changes.
 
 Before opening a PR, state what is implemented versus specified, which scenarios you ran, model/seed if relevant, and known limitations. No exaggerated claims of covert-channel prevention.
+
+## Standalone package check
+
+Build into an empty directory and verify the wheel outside the checkout:
+
+```bash
+.venv/bin/python -m pip wheel --no-deps --no-build-isolation . --wheel-dir /tmp/reef-panda-wheel
+.venv/bin/python tools/check_wheel.py /tmp/reef-panda-wheel
+```
+
+The checker requires exactly one Reef Panda wheel and verifies all 44 library cases, booking contracts, fixtures, browser assets and the single schema.

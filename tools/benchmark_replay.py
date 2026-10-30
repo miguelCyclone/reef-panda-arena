@@ -5,12 +5,7 @@ import asyncio
 import hashlib
 import platform
 from pathlib import Path
-from statistics import median
-from time import monotonic
 
-from reef_panda_arena.application.controller import run_replay
-from reef_panda_arena.gateway.policies import VALID_PROFILES
-from reef_panda_arena.scenarios.loader import ScenarioLoader
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -54,39 +49,15 @@ def ratio(count: int, total: int) -> str:
 
 
 async def measure(seeds: tuple[int, ...]) -> None:
-    cpu, memory = hardware()
-    print("# Local replay measurements")
-    print()
-    print(f"- Runtime: Python {platform.python_version()}, MySQL 8.4, no LLM")
-    print(f"- Hardware: {cpu}; RAM {memory}; OS {platform.system()} {platform.release()}")
-    print(f"- Source digest: `{source_digest()}`; scenario revision `0.1.0`")
-    print(f"- Seeds: {', '.join(map(str, seeds))}; one attacked and one benign control per seed/profile/scenario")
-    print("- Conditions: local mock tools and sink, deterministic replay, fresh run IDs, temperature not applicable")
-    print()
-    print("| Scenario | Profile | Attacked N | ASR | Utility under attack | Benign utility | Invalid attempts | Attack blocks | Benign blocks | p50 ms |")
-    print("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|")
-    for scenario_id in ScenarioLoader().list_ids():
-        for profile in sorted(VALID_PROFILES):
-            escaped = utility = benign = invalid = blocks = benign_blocks = 0
-            durations = []
-            for seed in seeds:
-                start = monotonic()
-                attacked = await run_replay(scenario_id, profile, seed, attack_enabled=True)
-                durations.append(round((monotonic() - start) * 1000))
-                control = await run_replay(scenario_id, profile, seed, attack_enabled=False)
-                escaped += attacked.secret_escaped
-                utility += attacked.benign_task_success
-                benign += control.benign_task_success
-                invalid += attacked.invalid_attempt
-                blocks += attacked.blocked_attempts
-                benign_blocks += control.blocked_attempts
-            print(
-                f"| {scenario_id} | {profile} | {len(seeds)} | {ratio(escaped, len(seeds))} "
-                f"| {ratio(utility, len(seeds))} | {ratio(benign, len(seeds))} "
-                f"| {invalid} | {blocks} | {benign_blocks} | {median(durations):.0f} |"
-            )
-    print()
-    print("These results measure fixed synthetic replay scripts and selected application boundaries. They do not establish security against arbitrary encodings, unmodeled tool paths, host compromise, or real-world workloads. Content filtering and taint tracking are deliberately limited baselines; live-model behavior must be reported separately.")
+    """Use the audited study runner; retain failed trials and measured denominators."""
+    from uuid import uuid4
+    from benchmark_post_audit import study
+    from benchmark_matrix_evidence import render_matrix
+
+    output = ROOT / ".build/measurements" / f"legacy-replay-{uuid4().hex}"
+    plan, rows = await study(tuple(f"C{i:02}" for i in range(10)), seeds, output)
+    print(render_matrix(plan, rows))
+    print(f"Saved per-trial evidence and provenance to {output}")
 
 
 def main() -> None:
