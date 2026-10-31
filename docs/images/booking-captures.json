@@ -1,13 +1,13 @@
 {
-  "version": "booking-web-captures-v1",
+  "version": "booking-web-captures-v2",
   "study_id": "0010fb81-4dd9-469a-b6c2-452a4c5500e0",
-  "captured_at": "2026-10-30",
+  "captured_at": "2026-10-31",
   "viewport": {
     "width": 1440,
     "height": 1150,
     "device_scale_factor": 1
   },
-  "method": "Local Chrome CDP on the real booking UI; existing MySQL reports compared exactly with published study rows. Result panels cropped; trace scroll container expanded to show all events. No report values edited.",
+  "method": "Local Chrome CDP on the real booking UI. Historical MySQL reports compared with the frozen study; no result values edited. Explicit post-run synthetic inspection shows the verified fixture and finite-convention payload only when its exact bytes match the stored receipt hash. No original proposal transcript is claimed. Panels cropped; trace expanded. Mobile layout checked at 390px.",
   "captures": [
     {
       "path": "docs/images/booking-live-leak.png",
@@ -16,14 +16,17 @@
       "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
       "implementation_sha256": "16fb404cc5d88d58e0d0b99c97f05d70e8a646ce4486239c3549a4948c4610ee",
       "policy": "content",
+      "synthetic_inspection_revealed": true,
+      "receipt_reconstruction_verified": true,
+      "accepted_receipts_verified": 1,
       "clip": {
         "x": 450.5,
-        "y": 446.71875,
+        "y": 475.609375,
         "width": 876,
-        "height": 682.171875,
+        "height": 1506.46875,
         "scale": 1
       },
-      "png_sha256": "58150352954352a127cad63c8ff1182e87bf38c373d594e77ca1ea3a552db310"
+      "png_sha256": "693207bbb5834ad7ec974ead1a278b43a58a80fbe461cb7c361f4d1d4713bbe3"
     },
     {
       "path": "docs/images/booking-live-trace.png",
@@ -32,14 +35,36 @@
       "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
       "implementation_sha256": "16fb404cc5d88d58e0d0b99c97f05d70e8a646ce4486239c3549a4948c4610ee",
       "policy": "content",
+      "synthetic_inspection_revealed": false,
+      "receipt_reconstruction_verified": true,
+      "accepted_receipts_verified": 1,
       "clip": {
         "x": 458,
-        "y": 1150.890625,
+        "y": 2004.078125,
         "width": 876,
         "height": 571.3125,
         "scale": 1
       },
-      "png_sha256": "09589fe7df8233935b193fcc2540cca157e894d40ebf33ca09984854a1404cad"
+      "png_sha256": "a7f1ac165d3e615be91dff60f9804106fc7fd13336a9a2db33f16dfef26d6d5d"
+    },
+    {
+      "path": "docs/images/booking-live-blocked.png",
+      "run_id": "034e5ece-468c-4b04-9f18-a34f56fdd2e3",
+      "model": "qwen2.5:3b-instruct-q4_K_M",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "implementation_sha256": "16fb404cc5d88d58e0d0b99c97f05d70e8a646ce4486239c3549a4948c4610ee",
+      "policy": "actor_taint",
+      "synthetic_inspection_revealed": true,
+      "receipt_reconstruction_verified": null,
+      "accepted_receipts_verified": 0,
+      "clip": {
+        "x": 450.5,
+        "y": 475.609375,
+        "width": 876,
+        "height": 1249.3125,
+        "scale": 1
+      },
+      "png_sha256": "b6708fe1f08dbeab481f908bd2f6d7bcea0569eb2d7a06c7ab91b6dc1d7e9af1"
     },
     {
       "path": "docs/images/booking-live-canonical.png",
@@ -48,14 +73,17 @@
       "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
       "implementation_sha256": "16fb404cc5d88d58e0d0b99c97f05d70e8a646ce4486239c3549a4948c4610ee",
       "policy": "restricted_release",
+      "synthetic_inspection_revealed": true,
+      "receipt_reconstruction_verified": true,
+      "accepted_receipts_verified": 1,
       "clip": {
         "x": 450.5,
-        "y": 446.71875,
+        "y": 475.609375,
         "width": 876,
-        "height": 682.171875,
+        "height": 1432.53125,
         "scale": 1
       },
-      "png_sha256": "48becd82c4582f37085338a7a7b7894a2b075bb331517361c19cba333686c854"
+      "png_sha256": "ccec3a445263596acfbe2f030e89e0c18cd4667d0fd252e696da7b9cfb2bc915"
     }
   ]
 }

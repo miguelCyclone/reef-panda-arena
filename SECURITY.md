@@ -8,6 +8,8 @@ Avoid running third-party or unknown agent tools in the same host context as per
 
 Private database receipts retain payload integrity digests. Ordinary API/SSE events expose bounded metadata and redacted lineage, excluding raw payloads, receiver keys and target-dependent payload digests. A database reader is outside the modeled actor boundary; a digest of a low-entropy value can enable offline guessing. This is a local synthetic arena, not a secrecy guarantee for production data. Raw model prompt/response capture is not enabled. Use only synthetic fixtures and keep the service bound to loopback.
 
+The booking UI provides an explicit post-run **Reveal synthetic data** action: `POST /v1/booking/runs/{run_id}/inspection` with `reveal_synthetic: true`. This intentionally reveals the fictional source attribute and receiver convention to the local human operator, plus finite accepted-payload reconstructions verified against saved receipt hashes. It is separate from sanitized reports/SSE, refuses active runs or unverified fixtures, uses `Cache-Control: no-store`, and never returns installation keys or changes experiment scoring. Published demonstration screenshots may include this explicitly revealed synthetic evidence.
+
 ## Dependency versions and historical archives
 
 The current installer requires patched dependency lines: `cryptography>=50,<51`, `setuptools>=84.1,<85`, and `pip>=26.2,<27`. The publication review checked installed dependencies with `pip-audit`; a clean scan means no known advisories returned at that time, not a general security guarantee.

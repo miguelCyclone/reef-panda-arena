@@ -50,6 +50,28 @@ def test_booking_api_uses_existing_events_receipts_and_primary_ui():
                 assert evaluation['id']<events[-1]['id']
                 serialized=json.dumps([report,events])
                 assert all(value not in serialized for value in (*DETAILS,*PHRASES))
+                inspection_url=f'/v1/booking/runs/{identity}/inspection'
+                assert (await client.get(inspection_url)).status_code==405
+                assert (await client.post(inspection_url,json={'reveal_synthetic':False})).status_code==422
+                revealed=await client.post(inspection_url,json={'reveal_synthetic':True})
+                assert revealed.status_code==200,revealed.text
+                assert revealed.headers['cache-control']=='no-store'
+                inspection=revealed.json()
+                assert inspection['source_consumed'] and inspection['synthetic_only']
+                from base64 import b64encode
+                from pydantic import SecretStr
+                from reef_panda_arena.storage.booking_inspection import inspect_booking
+                wrong_key=settings.model_copy(update={'encryption_key_base64':SecretStr(b64encode(b'0'*32).decode())})
+                with pytest.raises(ValueError,match='cannot be verified'):
+                    await inspect_booking(wrong_key,identity)
+                assert inspection['source_record']['private_detail'] in DETAILS
+                assert inspection['receipts'][0]['verified']
+                assert inspection['receipts'][0]['matches_private_detail']
+                assert inspection['receipts'][0]['decoded_attribute']==inspection['source_record']['private_detail']
+                assert (await client.get('/v1/booking/runs/'+identity)).json()==report
+                redacted_history=(await client.get('/v1/booking/runs')).text
+                assert all(value not in redacted_history for value in (*DETAILS,*PHRASES))
+
                 stream=await client.get(f'/v1/runs/{identity}/stream')
                 assert 'event: run.completed' in stream.text and 'retry: 30000' in stream.text
                 recent=(await client.get('/v1/booking/runs')).json()
@@ -86,6 +108,9 @@ def test_cancellation_preserves_read_and_unknown_task_without_replay_substitutio
         await asyncio.wait_for(ready.wait(),10)
         before=await booking_report(settings,identity)
         assert before['private_read_event_seqs'] and before['status']=='running'
+        from reef_panda_arena.storage.booking_inspection import inspect_booking
+        with pytest.raises(ValueError,match='only after'):
+            await inspect_booking(settings,identity)
         task.cancel()
         with pytest.raises(asyncio.CancelledError):await task
         report=BookingReport.model_validate(await booking_report(settings,identity))

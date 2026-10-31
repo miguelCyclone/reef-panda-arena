@@ -72,13 +72,19 @@ Use `--mode replay` for scripted execution. Results and redacted event trails ar
 
 ## ![See a real run](docs/images/readme-evidence.svg)
 
-The following screenshots are from persisted local Ollama runs, not mockups. Sensitive values and receiver mappings are redacted.
+[Watch the 15-second reel with audio](docs/media/reef-panda-reel.mp4) — an illustration of the synthetic experiment: an authorized read, an accepted tool request, and recovery of the same private attribute using a pre-agreed decoder.
+
+The following screenshots are from persisted local Ollama runs, not mockups. Red means confirmed secret recovery; green means the authorized action completed without recovery; orange means a blocked outbound call also prevented the action. “Authorized action completed” measures task correctness; “Outbound tool delivery” measures acceptance by the local mock destination.
+
+The explicit **Reveal synthetic data** view shows the fictional private attribute, receiver convention and accepted message reconstructed and verified against its stored receipt hash. Original proposals and arbitrary free text were not retained. Ordinary reports and event logs remain redacted; installation keys are never shown.
 
 ![Live booking that completes the task and leaks the additional private attribute](docs/images/booking-live-leak.png)
 
 ![Causal trace from private read to model decision, accepted request and independent receiver evaluation](docs/images/booking-live-trace.png)
 
 ![Canonical release: useful booking without recovery of the tested additional attribute](docs/images/booking-live-canonical.png)
+
+![Actor taint: the outbound call is blocked, preventing both secret delivery and the authorized action](docs/images/booking-live-blocked.png)
 
 <a id="beyond-booking"></a>
 
